@@ -1,0 +1,74 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Service {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  duration    Int      // duração em minutos
+  price       Float?
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  bookings    Booking[]
+  requests    ServiceRequest[]
+}
+
+model WorkingHours {
+  id        String   @id @default(cuid())
+  dayOfWeek Int      // 0 = domingo, 1 = segunda, ..., 6 = sábado
+  startTime String   // formato HH:mm
+  endTime   String   // formato HH:mm
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model DayOff {
+  id        String   @id @default(cuid())
+  date      DateTime // data específica de folga
+  reason    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Booking {
+  id          String   @id @default(cuid())
+  serviceId   String
+  service     Service  @relation(fields: [serviceId], references: [id])
+  clientName  String
+  clientEmail String?
+  clientPhone String
+  date        DateTime // data do agendamento
+  time        String   // horário no formato HH:mm
+  status      String   @default("pending") // pending, confirmed, cancelled, completed
+  price       Float?   // valor do serviço
+  notes       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model ServiceRequest {
+  id          String   @id @default(cuid())
+  serviceId   String
+  service     Service  @relation(fields: [serviceId], references: [id])
+  clientName  String
+  clientPhone String
+  address     String   // endereço onde o serviço será realizado
+  notes       String?
+  status      String   @default("pending") // pending, approved, rejected
+  adminNotes  String?  // observações do admin ao aprovar/rejeitar
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
