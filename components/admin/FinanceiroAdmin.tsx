@@ -34,10 +34,23 @@ export function FinanceiroAdmin() {
       if (filterDate) params.append('date', filterDate)
 
       const response = await fetch(`/api/admin/bookings?${params.toString()}`)
+      
+      if (!response.ok) {
+        throw new Error('Erro ao buscar agendamentos')
+      }
+      
       const data = await response.json()
-      setBookings(data)
+      
+      // Garantir que sempre seja um array
+      if (Array.isArray(data)) {
+        setBookings(data)
+      } else {
+        console.error('Resposta da API não é um array:', data)
+        setBookings([])
+      }
     } catch (error) {
       console.error('Erro ao carregar agendamentos:', error)
+      setBookings([]) // Garantir que seja um array vazio em caso de erro
     } finally {
       setLoading(false)
     }
@@ -81,16 +94,19 @@ export function FinanceiroAdmin() {
     }).format(value)
   }
 
-  const totalRevenue = bookings
+  // Garantir que bookings seja um array antes de usar métodos de array
+  const safeBookings = Array.isArray(bookings) ? bookings : []
+  
+  const totalRevenue = safeBookings
     .filter((b) => b.status === 'completed' || b.status === 'confirmed')
     .reduce((sum, b) => sum + (b.price || 0), 0)
 
-  const pendingRevenue = bookings
+  const pendingRevenue = safeBookings
     .filter((b) => b.status === 'pending')
     .reduce((sum, b) => sum + (b.price || 0), 0)
 
-  const completedCount = bookings.filter((b) => b.status === 'completed').length
-  const confirmedCount = bookings.filter((b) => b.status === 'confirmed').length
+  const completedCount = safeBookings.filter((b) => b.status === 'completed').length
+  const confirmedCount = safeBookings.filter((b) => b.status === 'confirmed').length
 
   if (loading) {
     return <div className="text-center py-8 text-gray-300">Carregando...</div>
@@ -174,7 +190,7 @@ export function FinanceiroAdmin() {
             </tr>
           </thead>
           <tbody className="bg-gray-800/30 divide-y divide-gray-700">
-            {bookings.length === 0 ? (
+            {!Array.isArray(bookings) || bookings.length === 0 ? (
               <tr>
                 <td colSpan={5} className="px-6 py-4 text-center text-gray-400">
                   Nenhum agendamento encontrado

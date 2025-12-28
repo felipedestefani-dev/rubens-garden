@@ -26,10 +26,23 @@ export function DayOffsAdmin() {
   async function fetchDayOffs() {
     try {
       const response = await fetch('/api/admin/day-offs')
+      
+      if (!response.ok) {
+        throw new Error('Erro ao buscar dias de folga')
+      }
+      
       const data = await response.json()
-      setDayOffs(data)
+      
+      // Garantir que sempre seja um array
+      if (Array.isArray(data)) {
+        setDayOffs(data)
+      } else {
+        console.error('Resposta da API não é um array:', data)
+        setDayOffs([])
+      }
     } catch (error) {
       console.error('Erro ao carregar dias de folga:', error)
+      setDayOffs([]) // Garantir que seja um array vazio em caso de erro
     } finally {
       setLoading(false)
     }
@@ -164,7 +177,7 @@ export function DayOffsAdmin() {
             </tr>
           </thead>
           <tbody className="bg-gray-800/30 divide-y divide-gray-700">
-            {dayOffs.length === 0 ? (
+            {!Array.isArray(dayOffs) || dayOffs.length === 0 ? (
               <tr>
                 <td colSpan={3} className="px-6 py-4 text-center text-gray-400">
                   Nenhum dia de folga cadastrado

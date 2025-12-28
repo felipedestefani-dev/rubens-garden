@@ -18,13 +18,13 @@ export async function GET() {
       },
     })
 
-    return NextResponse.json(dayOffs)
+    // Sempre retornar um array
+    return NextResponse.json(Array.isArray(dayOffs) ? dayOffs : [])
   } catch (error) {
     console.error('Erro ao buscar dias de folga:', error)
-    return NextResponse.json(
-      { error: 'Erro ao buscar dias de folga' },
-      { status: 500 }
-    )
+    
+    // Sempre retornar array vazio em caso de erro para não quebrar o frontend
+    return NextResponse.json([])
   }
 }
 
