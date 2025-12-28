@@ -8,8 +8,6 @@ generator client {
 datasource db {
   provider  = "postgresql"
   url       = env("DATABASE_URL")
-  // DIRECT_URL é necessário para migrações quando usando connection pooling (Supabase pgbouncer)
-  // Se não estiver usando pooling, defina DIRECT_URL igual ao DATABASE_URL
   directUrl = env("DIRECT_URL")
 }
 
