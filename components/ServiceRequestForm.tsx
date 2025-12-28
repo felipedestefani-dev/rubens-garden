@@ -28,10 +28,12 @@ export function ServiceRequestForm() {
 
   async function fetchServices() {
     try {
+      setLoading(true)
       const response = await fetch('/api/services')
       
       if (!response.ok) {
-        throw new Error('Erro ao carregar serviços')
+        const errorData = await response.json().catch(() => ({}))
+        throw new Error(errorData.error || 'Erro ao carregar serviços')
       }
       
       const data = await response.json()
@@ -46,6 +48,7 @@ export function ServiceRequestForm() {
     } catch (error) {
       console.error('Erro ao carregar serviços:', error)
       setServices([])
+      // Não mostrar erro ao usuário aqui, apenas logar
     } finally {
       setLoading(false)
     }
