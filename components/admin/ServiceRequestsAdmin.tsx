@@ -39,8 +39,13 @@ export function ServiceRequestsAdmin() {
 
   useEffect(() => {
     setMounted(true)
-    fetchRequests()
-  }, [filterStatus])
+  }, [])
+
+  useEffect(() => {
+    if (mounted) {
+      fetchRequests()
+    }
+  }, [filterStatus, mounted])
 
   async function fetchAvailableDates(serviceId: string) {
     setLoadingAvailability(true)
@@ -108,14 +113,18 @@ export function ServiceRequestsAdmin() {
   }
 
   async function fetchRequests() {
+    if (!mounted) return
+    
     try {
+      setLoading(true)
       const params = new URLSearchParams()
       if (filterStatus) params.append('status', filterStatus)
 
       const response = await fetch(`/api/admin/requests?${params.toString()}`)
       
       if (!response.ok) {
-        throw new Error('Erro ao buscar solicitações')
+        const errorData = await response.json().catch(() => ({}))
+        throw new Error(errorData.error || 'Erro ao buscar solicitações')
       }
 
       const data = await response.json()

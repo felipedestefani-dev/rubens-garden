@@ -1,8 +1,10 @@
 import Link from 'next/link'
 import { ServiceRequestForm } from '@/components/ServiceRequestForm'
+import { ErrorBoundary } from '@/components/ErrorBoundary'
 
 export default function Home() {
   return (
+    <ErrorBoundary>
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
       <header className="bg-gray-800/50 backdrop-blur-sm border-b border-gray-700 shadow-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -34,6 +36,7 @@ export default function Home() {
         </div>
       </footer>
     </div>
+    </ErrorBoundary>
   )
 }
 
