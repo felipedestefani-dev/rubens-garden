@@ -1,13 +1,13 @@
 import { PrismaClient } from '@prisma/client'
+import type { Prisma } from '@prisma/client'
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined
 }
 
-// Configuração do Prisma Client com tratamento de erros melhorado
-const prismaClientOptions = {
+// Configuração do Prisma Client
+const prismaClientOptions: Prisma.PrismaClientOptions = {
   log: process.env.NODE_ENV === 'development' ? ['error', 'warn'] : ['error'],
-  errorFormat: 'pretty',
 }
 
 export const prisma = globalForPrisma.prisma ?? new PrismaClient(prismaClientOptions)
