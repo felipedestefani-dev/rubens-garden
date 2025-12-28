@@ -97,21 +97,21 @@ export function ServiceRequestForm() {
   }
 
   if (loading) {
-    return <div className="text-center py-8 text-gray-300">Carregando serviços...</div>
+    return <div className="text-center py-8 text-gray-600">Carregando serviços...</div>
   }
 
   if (services.length === 0) {
     return (
-      <div className="text-center py-8 text-gray-400">
+      <div className="text-center py-8 text-gray-500">
         Nenhum serviço disponível no momento.
       </div>
     )
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
       <div>
-        <label htmlFor="service" className="block text-sm font-medium text-gray-300 mb-1">
+        <label htmlFor="service" className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
           Serviço *
         </label>
         <select
@@ -119,11 +119,11 @@ export function ServiceRequestForm() {
           required
           value={selectedService}
           onChange={(e) => setSelectedService(e.target.value)}
-          className="w-full px-4 py-2 bg-gray-700 border border-gray-600 text-gray-100 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
+          className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base bg-white border border-gray-300 text-gray-900 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
         >
           <option value="">Selecione um serviço</option>
           {services.map((service) => (
-            <option key={service.id} value={service.id} className="bg-gray-700">
+            <option key={service.id} value={service.id} className="bg-white">
               {service.name} ({service.duration} min)
             </option>
           ))}
@@ -131,7 +131,7 @@ export function ServiceRequestForm() {
       </div>
 
       <div>
-        <label htmlFor="clientName" className="block text-sm font-medium text-gray-300 mb-1">
+        <label htmlFor="clientName" className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
           Nome completo *
         </label>
         <input
@@ -140,12 +140,12 @@ export function ServiceRequestForm() {
           required
           value={formData.clientName}
           onChange={(e) => setFormData({ ...formData, clientName: e.target.value })}
-          className="w-full px-4 py-2 bg-gray-700 border border-gray-600 text-gray-100 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
+          className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base bg-white border border-gray-300 text-gray-900 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
         />
       </div>
 
       <div>
-        <label htmlFor="clientPhone" className="block text-sm font-medium text-gray-300 mb-1">
+        <label htmlFor="clientPhone" className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
           Telefone *
         </label>
         <input
@@ -154,35 +154,35 @@ export function ServiceRequestForm() {
           required
           value={formData.clientPhone}
           onChange={(e) => setFormData({ ...formData, clientPhone: e.target.value })}
-          className="w-full px-4 py-2 bg-gray-700 border border-gray-600 text-gray-100 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
+          className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base bg-white border border-gray-300 text-gray-900 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
         />
       </div>
 
       <div>
-        <label htmlFor="address" className="block text-sm font-medium text-gray-300 mb-1">
-          Endereço onde o serviço será realizado *
+        <label htmlFor="address" className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
+          Endereço *
         </label>
         <textarea
           id="address"
           required
-          rows={3}
+          rows={2}
           value={formData.address}
           onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-          className="w-full px-4 py-2 bg-gray-700 border border-gray-600 text-gray-100 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors resize-none"
+          className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base bg-white border border-gray-300 text-gray-900 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors resize-none"
           placeholder="Ex: Rua das Flores, 123 - Centro - São Paulo/SP"
         />
       </div>
 
       <div>
-        <label htmlFor="notes" className="block text-sm font-medium text-gray-300 mb-1">
+        <label htmlFor="notes" className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
           Observações
         </label>
         <textarea
           id="notes"
-          rows={3}
+          rows={2}
           value={formData.notes}
           onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-          className="w-full px-4 py-2 bg-gray-700 border border-gray-600 text-gray-100 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors resize-none"
+          className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base bg-white border border-gray-300 text-gray-900 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors resize-none"
           placeholder="Informações adicionais sobre o serviço desejado..."
         />
       </div>
@@ -190,7 +190,7 @@ export function ServiceRequestForm() {
       <button
         type="submit"
         disabled={submitting}
-        className="w-full py-3 bg-gradient-to-r from-emerald-500 to-green-600 text-white rounded-lg hover:from-emerald-600 hover:to-green-700 disabled:from-gray-600 disabled:to-gray-700 disabled:cursor-not-allowed font-semibold transition-all shadow-lg hover:shadow-emerald-500/50"
+        className="w-full py-2.5 sm:py-3 text-sm sm:text-base bg-gradient-to-r from-emerald-500 to-green-600 text-white rounded-lg hover:from-emerald-600 hover:to-green-700 disabled:from-gray-600 disabled:to-gray-700 disabled:cursor-not-allowed font-semibold transition-all shadow-lg hover:shadow-emerald-500/50"
       >
         {submitting ? 'Enviando...' : 'Enviar Solicitação'}
       </button>

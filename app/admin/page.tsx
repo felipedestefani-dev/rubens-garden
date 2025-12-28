@@ -37,27 +37,27 @@ export default function AdminPage() {
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-blue-950 to-slate-950">
-      <header className="bg-gray-800/50 backdrop-blur-sm border-b border-gray-700 shadow-lg sticky top-0 z-50">
+    <div className="min-h-screen bg-white">
+      <header className="bg-white border-b border-gray-200 shadow-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
           <div className="flex justify-between items-center gap-4">
             <div className="flex-1 min-w-0">
               <h1 className="text-xl sm:text-2xl font-bold animated-gradient truncate">
                 Senhor Natureza
               </h1>
-              <p className="text-xs sm:text-sm text-gray-400">Área Administrativa</p>
+              <p className="text-xs sm:text-sm text-gray-600">Área Administrativa</p>
             </div>
             <div className="flex gap-2 sm:gap-4 items-center flex-shrink-0">
               <button
                 onClick={handleLogout}
-                className="text-red-400 hover:text-red-300 font-medium transition-colors text-xs sm:text-sm px-2 sm:px-0"
+                className="text-red-600 hover:text-red-700 font-medium transition-colors text-xs sm:text-sm px-2 sm:px-0"
               >
                 <span className="hidden sm:inline">Sair</span>
                 <span className="sm:hidden">Sair</span>
               </button>
               <Link
                 href="/"
-                className="text-emerald-400 hover:text-emerald-300 font-medium transition-colors text-xs sm:text-sm"
+                className="text-emerald-600 hover:text-emerald-700 font-medium transition-colors text-xs sm:text-sm"
               >
                 <span className="hidden sm:inline">← Voltar ao site</span>
                 <span className="sm:hidden">← Site</span>
@@ -68,12 +68,12 @@ export default function AdminPage() {
       </header>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
-        <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl shadow-2xl border border-gray-700">
+        <div className="bg-white rounded-xl shadow-lg border border-gray-200">
           {/* Mobile Menu Button */}
-          <div className="lg:hidden border-b border-gray-700">
+          <div className="lg:hidden border-b border-gray-200">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="w-full px-4 py-3 flex items-center justify-between text-gray-300 hover:text-gray-100 transition-colors"
+              className="w-full px-4 py-3 flex items-center justify-between text-gray-700 hover:text-gray-900 transition-colors"
             >
               <span className="font-medium">
                 {tabs.find(t => t.id === activeTab)?.label || 'Menu'}
@@ -90,7 +90,7 @@ export default function AdminPage() {
             
             {/* Mobile Dropdown Menu */}
             {mobileMenuOpen && (
-              <div className="border-t border-gray-700 bg-gray-800/80">
+              <div className="border-t border-gray-200 bg-gray-50">
                 {tabs.map((tab) => (
                   <button
                     key={tab.id}
@@ -100,8 +100,8 @@ export default function AdminPage() {
                     }}
                     className={`w-full px-4 py-3 text-left font-medium text-sm transition-colors ${
                       activeTab === tab.id
-                        ? 'text-emerald-400 bg-gray-700/50'
-                        : 'text-gray-400 hover:text-gray-300 hover:bg-gray-700/30'
+                        ? 'text-emerald-600 bg-emerald-50'
+                        : 'text-gray-700 hover:text-gray-900 hover:bg-gray-100'
                     }`}
                   >
                     {tab.label}
@@ -112,7 +112,7 @@ export default function AdminPage() {
           </div>
 
           {/* Desktop Tabs */}
-          <div className="hidden lg:block border-b border-gray-700">
+          <div className="hidden lg:block border-b border-gray-200">
             <nav className="flex -mb-px overflow-x-auto scrollbar-hide">
               {tabs.map((tab) => (
                 <button
@@ -120,8 +120,8 @@ export default function AdminPage() {
                   onClick={() => setActiveTab(tab.id)}
                   className={`px-4 xl:px-6 py-4 font-medium text-sm border-b-2 transition-all whitespace-nowrap ${
                     activeTab === tab.id
-                      ? 'border-emerald-400 text-emerald-400'
-                      : 'border-transparent text-gray-400 hover:text-gray-300 hover:border-gray-600'
+                      ? 'border-emerald-600 text-emerald-600'
+                      : 'border-transparent text-gray-600 hover:text-gray-900 hover:border-gray-300'
                   }`}
                 >
                   {tab.label}

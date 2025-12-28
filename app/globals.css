@@ -3,38 +3,32 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 255, 255, 255;
-  --background-start-rgb: 2, 6, 23;  /* slate-950 */
-  --background-end-rgb: 3, 7, 18;    /* blue-950 */
+  --foreground-rgb: 17, 24, 39;  /* gray-900 */
+  --background-rgb: 255, 255, 255;  /* white */
 }
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background: rgb(var(--background-rgb));
   min-height: 100vh;
 }
 
-/* Scrollbar personalizado para tema dark azul */
+/* Scrollbar personalizado para tema claro */
 ::-webkit-scrollbar {
   width: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: rgb(2, 6, 23);  /* slate-950 */
+  background: #f3f4f6;  /* gray-100 */
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgb(30, 58, 138);  /* blue-800 */
+  background: #d1d5db;  /* gray-300 */
   border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgb(37, 99, 235);  /* blue-600 */
+  background: #9ca3af;  /* gray-400 */
 }
 
 /* Esconder scrollbar mas manter funcionalidade */
