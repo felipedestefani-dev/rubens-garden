@@ -60,13 +60,13 @@ body {
 .animated-gradient {
   background: linear-gradient(
     -45deg,
-    #10b981,
-    #34d399,
-    #6ee7b7,
-    #a7f3d0,
-    #6ee7b7,
-    #34d399,
-    #10b981
+    #65a30d,  /* Verde limão escuro */
+    #84cc16,  /* Verde limão */
+    #a3e635,  /* Verde limão médio */
+    #bef264,  /* Verde limão claro */
+    #a3e635,  /* Verde limão médio */
+    #84cc16,  /* Verde limão */
+    #65a30d   /* Verde limão escuro */
   );
   background-size: 300% 300%;
   -webkit-background-clip: text;
