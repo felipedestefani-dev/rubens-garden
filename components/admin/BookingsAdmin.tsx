@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { createPortal } from 'react-dom'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 
@@ -23,13 +24,22 @@ export function BookingsAdmin() {
   const [loading, setLoading] = useState(true)
   const [filterStatus, setFilterStatus] = useState<string>('')
   const [filterDate, setFilterDate] = useState<string>('')
+  const [deleteConfirm, setDeleteConfirm] = useState<{ id: string; clientName: string } | null>(null)
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    fetchBookings()
-  }, [filterStatus, filterDate])
+    setMounted(true)
+  }, [])
+
+  useEffect(() => {
+    if (mounted) {
+      fetchBookings()
+    }
+  }, [filterStatus, filterDate, mounted])
 
   async function fetchBookings() {
     try {
+      setLoading(true)
       const params = new URLSearchParams()
       if (filterStatus) params.append('status', filterStatus)
       if (filterDate) params.append('date', filterDate)
@@ -42,7 +52,6 @@ export function BookingsAdmin() {
       
       const data = await response.json()
       
-      // Verificar se é um array antes de usar
       if (Array.isArray(data)) {
         setBookings(data)
       } else {
@@ -74,153 +83,268 @@ export function BookingsAdmin() {
     }
   }
 
-  async function handleDelete(bookingId: string) {
-    if (!confirm('Tem certeza que deseja deletar este agendamento?')) return
+  async function handleDeleteConfirm() {
+    if (!deleteConfirm) return
 
     try {
-      const response = await fetch(`/api/admin/bookings/${bookingId}`, {
+      const response = await fetch(`/api/admin/bookings/${deleteConfirm.id}`, {
         method: 'DELETE',
       })
 
       if (!response.ok) throw new Error('Erro ao deletar agendamento')
 
       await fetchBookings()
+      setDeleteConfirm(null)
     } catch (error) {
       console.error('Erro ao deletar agendamento:', error)
       alert('Erro ao deletar agendamento. Tente novamente.')
+      setDeleteConfirm(null)
     }
   }
 
-  function getStatusColor(status: string): string {
+  function getStatusConfig(status: string) {
     switch (status) {
       case 'pending':
-        return 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
+        return {
+          label: 'Pendente',
+          color: 'text-amber-600',
+          bg: 'bg-amber-50',
+          border: 'border-amber-200',
+          icon: (
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          )
+        }
       case 'confirmed':
-        return 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
+        return {
+          label: 'Confirmado',
+          color: 'text-emerald-600',
+          bg: 'bg-emerald-50',
+          border: 'border-emerald-200',
+          icon: (
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            </svg>
+          )
+        }
       case 'cancelled':
-        return 'bg-red-500/20 text-red-400 border border-red-500/30'
+        return {
+          label: 'Cancelado',
+          color: 'text-red-600',
+          bg: 'bg-red-50',
+          border: 'border-red-200',
+          icon: (
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          )
+        }
       case 'completed':
-        return 'bg-blue-500/20 text-blue-400 border border-blue-500/30'
+        return {
+          label: 'Concluído',
+          color: 'text-blue-600',
+          bg: 'bg-blue-50',
+          border: 'border-blue-200',
+          icon: (
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          )
+        }
       default:
-        return 'bg-gray-500/20 text-gray-400 border border-gray-500/30'
+        return {
+          label: status,
+          color: 'text-gray-600',
+          bg: 'bg-gray-50',
+          border: 'border-gray-200',
+          icon: null
+        }
     }
   }
 
-  function getStatusLabel(status: string): string {
-    switch (status) {
-      case 'pending':
-        return 'Pendente'
-      case 'confirmed':
-        return 'Confirmado'
-      case 'cancelled':
-        return 'Cancelado'
-      case 'completed':
-        return 'Concluído'
-      default:
-        return status
-    }
-  }
+  const filteredBookings = bookings
 
   if (loading) {
-    return <div className="text-center py-8 text-gray-300">Carregando...</div>
+    return (
+      <div className="flex items-center justify-center py-20">
+        <div className="text-center">
+          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-600 mb-4"></div>
+          <p className="text-gray-500 text-sm">Carregando agendamentos...</p>
+        </div>
+      </div>
+    )
   }
 
   return (
-    <div>
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-        <h2 className="text-xl sm:text-2xl font-semibold text-gray-100">Agendamentos</h2>
-        <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 w-full sm:w-auto">
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h2 className="text-2xl font-bold text-gray-900">Agendamentos</h2>
+          <p className="text-sm text-gray-500 mt-1">
+            {bookings.length} agendamento{bookings.length !== 1 ? 's' : ''} total{bookings.length > 0 ? ' • ' : ''}
+            {bookings.filter(b => b.status === 'pending').length > 0 && (
+              <span className="font-medium text-amber-600">
+                {bookings.filter(b => b.status === 'pending').length} pendente{bookings.filter(b => b.status === 'pending').length !== 1 ? 's' : ''}
+              </span>
+            )}
+          </p>
+        </div>
+        
+        <div className="flex items-center gap-3">
           <select
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
-            className="px-3 py-2 bg-gray-700 border border-gray-600 text-gray-100 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors text-sm sm:text-base w-full sm:w-auto"
+            className="px-4 py-2 text-sm border border-gray-200 rounded-lg bg-white text-gray-700 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
           >
-            <option value="">Todos os status</option>
-            <option value="pending">Pendente</option>
-            <option value="confirmed">Confirmado</option>
-            <option value="cancelled">Cancelado</option>
-            <option value="completed">Concluído</option>
+            <option value="">Todos</option>
+            <option value="pending">Pendentes</option>
+            <option value="confirmed">Confirmados</option>
+            <option value="cancelled">Cancelados</option>
+            <option value="completed">Concluídos</option>
           </select>
           <input
             type="date"
             value={filterDate}
             onChange={(e) => setFilterDate(e.target.value)}
-            className="px-3 py-2 bg-gray-700 border border-gray-600 text-gray-100 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors text-sm sm:text-base w-full sm:w-auto"
+            className="px-4 py-2 text-sm border border-gray-200 rounded-lg bg-white text-gray-700 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
           />
         </div>
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-700">
-          <thead className="bg-gray-700/50">
-            <tr>
-              <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                Cliente
-              </th>
-              <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                Serviço
-              </th>
-              <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                Data/Hora
-              </th>
-              <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                Status
-              </th>
-              <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                Ações
-              </th>
-            </tr>
-          </thead>
-          <tbody className="bg-gray-800/30 divide-y divide-gray-700">
-            {bookings.length === 0 ? (
-              <tr>
-                <td colSpan={5} className="px-3 sm:px-6 py-4 text-center text-gray-400 text-sm">
-                  Nenhum agendamento encontrado
-                </td>
-              </tr>
-            ) : (
-              bookings.map((booking) => (
-                <tr key={booking.id} className="hover:bg-gray-700/30 transition-colors">
-                  <td className="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap">
-                    <div className="text-xs sm:text-sm font-medium text-gray-100">{booking.clientName}</div>
-                    <div className="text-xs sm:text-sm text-gray-400">{booking.clientPhone}</div>
-                  </td>
-                  <td className="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-100">
-                    {booking.service.name}
-                  </td>
-                  <td className="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-400">
-                    <div>
-                      {format(new Date(booking.date), "dd 'de' MMMM 'de' yyyy", { locale: ptBR })}
-                    </div>
-                    <div className="font-medium text-gray-300">{booking.time}</div>
-                  </td>
-                  <td className="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap">
-                    <select
-                      value={booking.status}
-                      onChange={(e) => handleStatusChange(booking.id, e.target.value)}
-                      className={`px-2 py-1 text-xs font-semibold rounded-full bg-gray-700 border ${getStatusColor(booking.status)} focus:ring-2 focus:ring-emerald-500 transition-colors`}
-                    >
-                      <option value="pending">Pendente</option>
-                      <option value="confirmed">Confirmado</option>
-                      <option value="cancelled">Cancelado</option>
-                      <option value="completed">Concluído</option>
-                    </select>
-                  </td>
-                  <td className="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm font-medium">
-                    <button
-                      onClick={() => handleDelete(booking.id)}
-                      className="text-red-400 hover:text-red-300 transition-colors"
-                    >
-                      Deletar
-                    </button>
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-      </div>
+      {/* Cards Grid */}
+      {filteredBookings.length === 0 ? (
+        <div className="text-center py-16 bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200">
+          <svg className="w-12 h-12 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+          <p className="text-gray-500 font-medium">Nenhum agendamento encontrado</p>
+          <p className="text-gray-400 text-sm mt-1">
+            {filterStatus || filterDate ? 'Tente alterar os filtros' : 'Os agendamentos aparecerão aqui'}
+          </p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {filteredBookings.map((booking) => {
+            const statusConfig = getStatusConfig(booking.status)
+            return (
+              <div
+                key={booking.id}
+                className="bg-white rounded-xl border border-gray-200 p-5 hover:shadow-lg transition-all duration-200 hover:border-gray-300"
+              >
+                {/* Status Badge */}
+                <div className="flex items-center justify-between mb-4">
+                  <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium ${statusConfig.bg} ${statusConfig.color} ${statusConfig.border} border`}>
+                    {statusConfig.icon}
+                    {statusConfig.label}
+                  </span>
+                </div>
+
+                {/* Service */}
+                <div className="mb-4">
+                  <p className="text-xs text-gray-500 mb-1">Serviço</p>
+                  <p className="text-sm font-semibold text-gray-900">{booking.service.name}</p>
+                </div>
+
+                {/* Client Info */}
+                <div className="mb-4 space-y-2">
+                  <div>
+                    <p className="text-xs text-gray-500 mb-1">Cliente</p>
+                    <p className="text-sm font-medium text-gray-900">{booking.clientName}</p>
+                  </div>
+                  <div className="flex items-center gap-2 text-xs text-gray-600">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                    </svg>
+                    <span>{booking.clientPhone}</span>
+                  </div>
+                </div>
+
+                {/* Date & Time */}
+                <div className="mb-4 p-3 bg-gray-50 rounded-lg">
+                  <p className="text-xs text-gray-500 mb-1">Data e Horário</p>
+                  <p className="text-sm font-semibold text-gray-900">
+                    {format(new Date(booking.date), "dd 'de' MMMM 'de' yyyy", { locale: ptBR })}
+                  </p>
+                  <p className="text-sm text-gray-700 mt-1">{booking.time}</p>
+                </div>
+
+                {/* Notes */}
+                {booking.notes && (
+                  <div className="mb-4 p-3 bg-blue-50 rounded-lg border border-blue-100">
+                    <p className="text-xs text-blue-600 font-medium mb-1">Observações</p>
+                    <p className="text-sm text-blue-900 line-clamp-2">{booking.notes}</p>
+                  </div>
+                )}
+
+                {/* Actions */}
+                <div className="flex items-center gap-2 pt-4 border-t border-gray-100">
+                  <select
+                    value={booking.status}
+                    onChange={(e) => handleStatusChange(booking.id, e.target.value)}
+                    className="flex-1 px-3 py-2 text-sm border border-gray-200 rounded-lg bg-white text-gray-700 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
+                  >
+                    <option value="pending">Pendente</option>
+                    <option value="confirmed">Confirmado</option>
+                    <option value="cancelled">Cancelado</option>
+                    <option value="completed">Concluído</option>
+                  </select>
+                  <button
+                    onClick={() => setDeleteConfirm({ id: booking.id, clientName: booking.clientName })}
+                    className="px-4 py-2 text-sm font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition-colors"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      )}
+
+      {/* Delete Confirm Modal */}
+      {deleteConfirm && mounted && createPortal(
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full">
+            <div className="p-6">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="flex-shrink-0 w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
+                  <svg className="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-gray-900">Confirmar Exclusão</h3>
+                  <p className="text-sm text-gray-500 mt-1">Esta ação não pode ser desfeita</p>
+                </div>
+              </div>
+              
+              <p className="text-gray-700 mb-6">
+                Tem certeza que deseja deletar o agendamento de <span className="font-semibold">{deleteConfirm.clientName}</span>?
+              </p>
+
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setDeleteConfirm(null)}
+                  className="flex-1 px-4 py-2.5 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+                >
+                  Cancelar
+                </button>
+                <button
+                  onClick={handleDeleteConfirm}
+                  className="flex-1 px-4 py-2.5 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors"
+                >
+                  Deletar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
     </div>
   )
 }
-

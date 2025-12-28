@@ -30,7 +30,6 @@ export function WorkingHoursAdmin() {
   }, [])
 
   useEffect(() => {
-    // Garantir que workingHours seja um array antes de usar find
     if (!Array.isArray(workingHours)) {
       setTimeInputs({})
       return
@@ -49,6 +48,7 @@ export function WorkingHoursAdmin() {
 
   async function fetchWorkingHours() {
     try {
+      setLoading(true)
       const response = await fetch('/api/admin/working-hours')
       
       if (!response.ok) {
@@ -57,7 +57,6 @@ export function WorkingHoursAdmin() {
       
       const data = await response.json()
       
-      // Garantir que sempre seja um array
       if (Array.isArray(data)) {
         setWorkingHours(data)
       } else {
@@ -66,7 +65,7 @@ export function WorkingHoursAdmin() {
       }
     } catch (error) {
       console.error('Erro ao carregar horários:', error)
-      setWorkingHours([]) // Garantir que seja um array vazio em caso de erro
+      setWorkingHours([])
     } finally {
       setLoading(false)
     }
@@ -88,7 +87,6 @@ export function WorkingHoursAdmin() {
       if (!response.ok) throw new Error('Erro ao salvar horário')
 
       await fetchWorkingHours()
-      alert('Horário salvo com sucesso!')
     } catch (error) {
       console.error('Erro ao salvar horário:', error)
       alert('Erro ao salvar horário. Tente novamente.')
@@ -96,7 +94,6 @@ export function WorkingHoursAdmin() {
   }
 
   async function handleToggle(dayOfWeek: number, isActive: boolean) {
-    // Garantir que workingHours seja um array antes de usar find
     if (!Array.isArray(workingHours)) return
     
     const existing = workingHours.find((wh) => wh.dayOfWeek === dayOfWeek)
@@ -123,10 +120,6 @@ export function WorkingHoursAdmin() {
     }
   }
 
-  if (loading) {
-    return <div className="text-center py-8 text-gray-300">Carregando...</div>
-  }
-
   function updateTimeInput(dayOfWeek: number, field: 'startTime' | 'endTime', value: string) {
     setTimeInputs((prev) => ({
       ...prev,
@@ -137,83 +130,128 @@ export function WorkingHoursAdmin() {
     }))
   }
 
-  return (
-    <div>
-      <h2 className="text-2xl font-semibold text-gray-100 mb-6">Horários de Funcionamento</h2>
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <div className="text-center">
+          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-600 mb-4"></div>
+          <p className="text-gray-500 text-sm">Carregando horários...</p>
+        </div>
+      </div>
+    )
+  }
 
-      <div className="space-y-4">
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div>
+        <h2 className="text-2xl font-bold text-gray-900">Horários de Funcionamento</h2>
+        <p className="text-sm text-gray-500 mt-1">Configure os horários de atendimento para cada dia da semana</p>
+      </div>
+
+      {/* Days Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {DAYS.map((dayName, dayOfWeek) => {
-          // Garantir que workingHours seja um array antes de usar find
           const existing = Array.isArray(workingHours) 
             ? workingHours.find((wh) => wh.dayOfWeek === dayOfWeek)
             : null
           const currentInputs = timeInputs[dayOfWeek] || { startTime: '08:00', endTime: '18:00' }
+          const isActive = existing?.isActive || false
 
           return (
             <div
               key={dayOfWeek}
-              className="p-4 border border-gray-700 rounded-lg bg-gray-700/30 hover:bg-gray-700/50 transition-colors"
+              className={`bg-white rounded-xl border-2 p-5 transition-all ${
+                isActive 
+                  ? 'border-emerald-200 shadow-sm' 
+                  : 'border-gray-200'
+              }`}
             >
-              <div className="flex items-center justify-between">
-                <div className="flex-1">
-                  <div className="flex items-center gap-4 flex-wrap">
-                    <h3 className="font-medium text-gray-100 w-32">{dayName}</h3>
+              {/* Day Header */}
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-semibold text-gray-900">{dayName}</h3>
+                <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium ${
+                  isActive
+                    ? 'bg-emerald-50 text-emerald-600 border border-emerald-200'
+                    : 'bg-gray-50 text-gray-600 border border-gray-200'
+                }`}>
+                  {isActive ? 'Ativo' : 'Inativo'}
+                </span>
+              </div>
 
-                    {existing?.isActive ? (
-                      <>
-                        <input
-                          type="time"
-                          value={currentInputs.startTime}
-                          onChange={(e) => updateTimeInput(dayOfWeek, 'startTime', e.target.value)}
-                          className="px-3 py-2 bg-gray-700 border border-gray-600 text-gray-100 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
-                        />
-                        <span className="text-gray-400">até</span>
-                        <input
-                          type="time"
-                          value={currentInputs.endTime}
-                          onChange={(e) => updateTimeInput(dayOfWeek, 'endTime', e.target.value)}
-                          className="px-3 py-2 bg-gray-700 border border-gray-600 text-gray-100 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
-                        />
-                        <button
-                          onClick={() => handleSave(dayOfWeek, currentInputs.startTime, currentInputs.endTime)}
-                          className="px-4 py-2 bg-gradient-to-r from-emerald-500 to-green-600 text-white rounded-lg hover:from-emerald-600 hover:to-green-700 text-sm transition-all shadow-lg hover:shadow-emerald-500/50 font-medium"
-                        >
-                          Salvar
-                        </button>
-                        <button
-                          onClick={() => handleToggle(dayOfWeek, true)}
-                          className="px-4 py-2 bg-gray-700 text-gray-300 rounded-lg hover:bg-gray-600 text-sm transition-colors font-medium"
-                        >
-                          Desativar
-                        </button>
-                      </>
-                    ) : (
-                      <>
-                        <span className="text-gray-500 text-sm">Não configurado</span>
-                        <input
-                          type="time"
-                          value={currentInputs.startTime}
-                          onChange={(e) => updateTimeInput(dayOfWeek, 'startTime', e.target.value)}
-                          className="px-3 py-2 bg-gray-700 border border-gray-600 text-gray-100 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
-                        />
-                        <span className="text-gray-400">até</span>
-                        <input
-                          type="time"
-                          value={currentInputs.endTime}
-                          onChange={(e) => updateTimeInput(dayOfWeek, 'endTime', e.target.value)}
-                          className="px-3 py-2 bg-gray-700 border border-gray-600 text-gray-100 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
-                        />
-                        <button
-                          onClick={() => handleSave(dayOfWeek, currentInputs.startTime, currentInputs.endTime)}
-                          className="px-4 py-2 bg-gradient-to-r from-emerald-500 to-green-600 text-white rounded-lg hover:from-emerald-600 hover:to-green-700 text-sm transition-all shadow-lg hover:shadow-emerald-500/50 font-medium"
-                        >
-                          Ativar
-                        </button>
-                      </>
-                    )}
+              {/* Time Inputs */}
+              {isActive ? (
+                <div className="space-y-4">
+                  <div className="flex items-center gap-3">
+                    <div className="flex-1">
+                      <label className="block text-xs text-gray-500 mb-1">Início</label>
+                      <input
+                        type="time"
+                        value={currentInputs.startTime}
+                        onChange={(e) => updateTimeInput(dayOfWeek, 'startTime', e.target.value)}
+                        className="w-full px-4 py-2.5 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
+                      />
+                    </div>
+                    <div className="pt-6 text-gray-400">até</div>
+                    <div className="flex-1">
+                      <label className="block text-xs text-gray-500 mb-1">Fim</label>
+                      <input
+                        type="time"
+                        value={currentInputs.endTime}
+                        onChange={(e) => updateTimeInput(dayOfWeek, 'endTime', e.target.value)}
+                        className="w-full px-4 py-2.5 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
+                      />
+                    </div>
+                  </div>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => handleSave(dayOfWeek, currentInputs.startTime, currentInputs.endTime)}
+                      className="flex-1 px-4 py-2.5 text-sm font-medium text-white bg-emerald-600 rounded-lg hover:bg-emerald-700 transition-colors"
+                    >
+                      Salvar
+                    </button>
+                    <button
+                      onClick={() => handleToggle(dayOfWeek, true)}
+                      className="px-4 py-2.5 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+                    >
+                      Desativar
+                    </button>
                   </div>
                 </div>
-              </div>
+              ) : (
+                <div className="space-y-4">
+                  <div className="p-4 bg-gray-50 rounded-lg text-center">
+                    <p className="text-sm text-gray-500 mb-3">Horário não configurado</p>
+                    <div className="flex items-center gap-3">
+                      <div className="flex-1">
+                        <label className="block text-xs text-gray-500 mb-1">Início</label>
+                        <input
+                          type="time"
+                          value={currentInputs.startTime}
+                          onChange={(e) => updateTimeInput(dayOfWeek, 'startTime', e.target.value)}
+                          className="w-full px-4 py-2.5 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
+                        />
+                      </div>
+                      <div className="pt-6 text-gray-400">até</div>
+                      <div className="flex-1">
+                        <label className="block text-xs text-gray-500 mb-1">Fim</label>
+                        <input
+                          type="time"
+                          value={currentInputs.endTime}
+                          onChange={(e) => updateTimeInput(dayOfWeek, 'endTime', e.target.value)}
+                          className="w-full px-4 py-2.5 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => handleSave(dayOfWeek, currentInputs.startTime, currentInputs.endTime)}
+                    className="w-full px-4 py-2.5 text-sm font-medium text-white bg-emerald-600 rounded-lg hover:bg-emerald-700 transition-colors"
+                  >
+                    Ativar
+                  </button>
+                </div>
+              )}
             </div>
           )
         })}
@@ -221,4 +259,3 @@ export function WorkingHoursAdmin() {
     </div>
   )
 }
-

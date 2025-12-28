@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Link from 'next/link'
 
 interface Service {
   id: string
@@ -109,21 +110,21 @@ export function ServiceRequestForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-5">
       <div>
-        <label htmlFor="service" className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
-          Serviço *
+        <label htmlFor="service" className="block text-sm font-medium text-gray-700 mb-2">
+          Serviço
         </label>
         <select
           id="service"
           required
           value={selectedService}
           onChange={(e) => setSelectedService(e.target.value)}
-          className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base bg-white border border-gray-300 text-gray-900 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
+          className="w-full px-4 py-3 text-sm bg-white border border-gray-200 text-gray-900 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
         >
           <option value="">Selecione um serviço</option>
           {services.map((service) => (
-            <option key={service.id} value={service.id} className="bg-white">
+            <option key={service.id} value={service.id}>
               {service.name} ({service.duration} min)
             </option>
           ))}
@@ -131,8 +132,8 @@ export function ServiceRequestForm() {
       </div>
 
       <div>
-        <label htmlFor="clientName" className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
-          Nome completo *
+        <label htmlFor="clientName" className="block text-sm font-medium text-gray-700 mb-2">
+          Nome completo
         </label>
         <input
           type="text"
@@ -140,13 +141,14 @@ export function ServiceRequestForm() {
           required
           value={formData.clientName}
           onChange={(e) => setFormData({ ...formData, clientName: e.target.value })}
-          className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base bg-white border border-gray-300 text-gray-900 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
+          className="w-full px-4 py-3 text-sm bg-white border border-gray-200 text-gray-900 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
+          placeholder="Seu nome completo"
         />
       </div>
 
       <div>
-        <label htmlFor="clientPhone" className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
-          Telefone *
+        <label htmlFor="clientPhone" className="block text-sm font-medium text-gray-700 mb-2">
+          Telefone
         </label>
         <input
           type="tel"
@@ -154,46 +156,59 @@ export function ServiceRequestForm() {
           required
           value={formData.clientPhone}
           onChange={(e) => setFormData({ ...formData, clientPhone: e.target.value })}
-          className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base bg-white border border-gray-300 text-gray-900 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
+          className="w-full px-4 py-3 text-sm bg-white border border-gray-200 text-gray-900 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
+          placeholder="(00) 00000-0000"
         />
       </div>
 
       <div>
-        <label htmlFor="address" className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
-          Endereço *
+        <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-2">
+          Endereço
         </label>
         <textarea
           id="address"
           required
-          rows={2}
+          rows={3}
           value={formData.address}
           onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-          className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base bg-white border border-gray-300 text-gray-900 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors resize-none"
-          placeholder="Ex: Rua das Flores, 123 - Centro - São Paulo/SP"
+          className="w-full px-4 py-3 text-sm bg-white border border-gray-200 text-gray-900 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all resize-none"
+          placeholder="Rua, número, bairro, cidade - Estado"
         />
       </div>
 
       <div>
-        <label htmlFor="notes" className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
-          Observações
+        <label htmlFor="notes" className="block text-sm font-medium text-gray-700 mb-2">
+          Observações <span className="text-gray-400 font-normal">(opcional)</span>
         </label>
         <textarea
           id="notes"
-          rows={2}
+          rows={3}
           value={formData.notes}
           onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-          className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base bg-white border border-gray-300 text-gray-900 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors resize-none"
-          placeholder="Informações adicionais sobre o serviço desejado..."
+          className="w-full px-4 py-3 text-sm bg-white border border-gray-200 text-gray-900 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all resize-none"
+          placeholder="Informações adicionais sobre o serviço..."
         />
       </div>
 
-      <button
-        type="submit"
-        disabled={submitting}
-        className="w-full py-2.5 sm:py-3 text-sm sm:text-base bg-gradient-to-r from-emerald-500 to-green-600 text-white rounded-lg hover:from-emerald-600 hover:to-green-700 disabled:from-gray-600 disabled:to-gray-700 disabled:cursor-not-allowed font-semibold transition-all shadow-lg hover:shadow-emerald-500/50"
-      >
-        {submitting ? 'Enviando...' : 'Enviar Solicitação'}
-      </button>
+      <div className="flex flex-col sm:flex-row gap-3">
+        <button
+          type="submit"
+          disabled={submitting}
+          className="flex-1 py-3.5 text-sm font-medium bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-all shadow-sm hover:shadow-md"
+        >
+          {submitting ? 'Enviando...' : 'Enviar Solicitação'}
+        </button>
+        <Link
+          href="/admin"
+          className="flex items-center justify-center gap-2 px-6 py-3.5 text-sm font-medium bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 transition-all shadow-sm hover:shadow-md"
+        >
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+          Painel Admin
+        </Link>
+      </div>
     </form>
   )
 }

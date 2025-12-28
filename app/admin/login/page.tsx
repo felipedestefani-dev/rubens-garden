@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 import Link from 'next/link'
 
 export default function LoginPage() {
@@ -29,7 +30,6 @@ export default function LoginPage() {
         throw new Error(data.error || 'Erro ao fazer login')
       }
 
-      // Redirecionar para a área administrativa
       router.push('/admin')
       router.refresh()
     } catch (error) {
@@ -41,73 +41,83 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center p-4">
-      <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-8 w-full max-w-md">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold animated-gradient mb-2">
-            Senhor Natureza
-          </h1>
-          <p className="text-gray-600">Área Administrativa</p>
-        </div>
-
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-2">
-              Usuário
-            </label>
-            <input
-              id="username"
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              className="w-full px-4 py-3 bg-white border border-gray-300 text-gray-900 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
-              placeholder="Digite seu usuário"
-              required
-              autoComplete="username"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
-              Senha
-            </label>
-            <input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 bg-white border border-gray-300 text-gray-900 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
-              placeholder="Digite sua senha"
-              required
-              autoComplete="current-password"
-            />
-          </div>
-
-          {error && (
-            <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg text-sm">
-              {error}
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+      <div className="w-full max-w-md">
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-8">
+          <div className="text-center mb-8">
+            <div className="flex justify-center mb-4">
+              <Image 
+                src="/assets/logotipo.svg" 
+                alt="Senhor Natureza" 
+                width={64} 
+                height={64}
+                className="w-16 h-16"
+              />
             </div>
-          )}
+            <h1 className="text-2xl font-semibold text-gray-900 mb-1">
+              Senhor Natureza
+            </h1>
+            <p className="text-sm text-gray-500">Área Administrativa</p>
+          </div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full px-4 py-3 bg-gradient-to-r from-emerald-500 to-green-600 text-white rounded-lg hover:from-emerald-600 hover:to-green-700 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed transition-all shadow-lg hover:shadow-emerald-500/50 font-medium"
-          >
-            {loading ? 'Entrando...' : 'Entrar'}
-          </button>
-        </form>
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <div>
+              <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-2">
+                Usuário
+              </label>
+              <input
+                id="username"
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                className="w-full px-4 py-3 text-sm bg-white border border-gray-200 text-gray-900 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
+                placeholder="Digite seu usuário"
+                required
+                autoComplete="username"
+              />
+            </div>
 
-        <div className="mt-6 text-center">
-          <Link
-            href="/"
-            className="text-emerald-600 hover:text-emerald-700 text-sm transition-colors"
-          >
-            ← Voltar ao site
-          </Link>
+            <div>
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+                Senha
+              </label>
+              <input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-4 py-3 text-sm bg-white border border-gray-200 text-gray-900 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
+                placeholder="Digite sua senha"
+                required
+                autoComplete="current-password"
+              />
+            </div>
+
+            {error && (
+              <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-xl text-sm">
+                {error}
+              </div>
+            )}
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full py-3.5 text-sm font-medium bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-all shadow-sm hover:shadow-md"
+            >
+              {loading ? 'Entrando...' : 'Entrar'}
+            </button>
+          </form>
+
+          <div className="mt-6 text-center">
+            <Link
+              href="/"
+              className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
+            >
+              ← Voltar ao site
+            </Link>
+          </div>
         </div>
       </div>
     </div>
   )
 }
-
