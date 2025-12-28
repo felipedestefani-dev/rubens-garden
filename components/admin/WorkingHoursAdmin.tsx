@@ -43,26 +43,11 @@ export function WorkingHoursAdmin() {
 
   async function fetchWorkingHours() {
     try {
-      setLoading(true)
       const response = await fetch('/api/admin/working-hours')
-      
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}))
-        throw new Error(errorData.error || 'Erro ao carregar horários')
-      }
-      
       const data = await response.json()
-      
-      // Verificar se é um array antes de usar
-      if (Array.isArray(data)) {
-        setWorkingHours(data)
-      } else {
-        console.error('Resposta da API não é um array:', data)
-        setWorkingHours([])
-      }
+      setWorkingHours(data)
     } catch (error) {
       console.error('Erro ao carregar horários:', error)
-      setWorkingHours([])
     } finally {
       setLoading(false)
     }

@@ -26,14 +26,7 @@ export function ServiceSelection() {
 
   async function fetchServices() {
     try {
-      setLoading(true)
       const response = await fetch('/api/services')
-      
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}))
-        throw new Error(errorData.error || 'Erro ao carregar serviços')
-      }
-      
       const data = await response.json()
       
       // Verificar se é um array antes de usar filter
@@ -46,7 +39,6 @@ export function ServiceSelection() {
     } catch (error) {
       console.error('Erro ao carregar serviços:', error)
       setServices([])
-      // Não mostrar erro ao usuário aqui, apenas logar
     } finally {
       setLoading(false)
     }

@@ -33,7 +33,7 @@ export function ServiceRequestForm() {
       
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}))
-        throw new Error(errorData.error || 'Erro ao carregar serviços')
+        throw new Error(errorData.error || errorData.details || `Erro ${response.status}: ${response.statusText}`)
       }
       
       const data = await response.json()
@@ -48,7 +48,6 @@ export function ServiceRequestForm() {
     } catch (error) {
       console.error('Erro ao carregar serviços:', error)
       setServices([])
-      // Não mostrar erro ao usuário aqui, apenas logar
     } finally {
       setLoading(false)
     }

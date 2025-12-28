@@ -124,7 +124,7 @@ export function ServiceRequestsAdmin() {
       
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}))
-        throw new Error(errorData.error || 'Erro ao buscar solicitações')
+        throw new Error(errorData.error || errorData.details || 'Erro ao buscar solicitações')
       }
 
       const data = await response.json()

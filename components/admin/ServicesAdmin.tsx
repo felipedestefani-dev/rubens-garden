@@ -76,6 +76,12 @@ export function ServicesAdmin() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
 
+    const isEditing = !!editingService
+    console.log(`[ServicesAdmin] ${isEditing ? 'Atualizando' : 'Criando'} serviço...`, {
+      isEditing,
+      formData
+    })
+
     try {
       const payload = {
         name: formData.name,
@@ -84,29 +90,69 @@ export function ServicesAdmin() {
         active: formData.active,
       }
 
+      console.log('[ServicesAdmin] Payload preparado:', payload)
+
       if (editingService) {
+        console.log(`[ServicesAdmin] Fazendo PUT para /api/admin/services/${editingService.id}`)
         const response = await fetch(`/api/admin/services/${editingService.id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload),
         })
 
-        if (!response.ok) throw new Error('Erro ao atualizar serviço')
+        console.log('[ServicesAdmin] Resposta recebida:', {
+          status: response.status,
+          statusText: response.statusText,
+          ok: response.ok
+        })
+
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({}))
+          console.error('[ServicesAdmin] ❌ Erro na resposta:', errorData)
+          throw new Error(errorData.error || errorData.details || 'Erro ao atualizar serviço')
+        }
       } else {
+        console.log('[ServicesAdmin] Fazendo POST para /api/admin/services')
         const response = await fetch('/api/admin/services', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload),
         })
 
-        if (!response.ok) throw new Error('Erro ao criar serviço')
+        console.log('[ServicesAdmin] Resposta recebida:', {
+          status: response.status,
+          statusText: response.statusText,
+          ok: response.ok,
+          headers: Object.fromEntries(response.headers.entries())
+        })
+
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({}))
+          console.error('[ServicesAdmin] ❌ Erro na resposta:', {
+            status: response.status,
+            errorData,
+            code: errorData.code,
+            details: errorData.details
+          })
+          throw new Error(errorData.error || errorData.details || `Erro ${response.status}: ${response.statusText}`)
+        }
+
+        const createdService = await response.json()
+        console.log('[ServicesAdmin] ✅ Serviço criado com sucesso:', {
+          id: createdService.id,
+          name: createdService.name
+        })
       }
 
       await fetchServices()
       handleCancel()
     } catch (error) {
-      console.error('Erro ao salvar serviço:', error)
-      alert('Erro ao salvar serviço. Tente novamente.')
+      console.error('[ServicesAdmin] ❌ Erro ao salvar serviço:', {
+        erro: error,
+        mensagem: error instanceof Error ? error.message : 'Erro desconhecido',
+        stack: error instanceof Error ? error.stack : undefined
+      })
+      alert(error instanceof Error ? error.message : 'Erro ao salvar serviço. Tente novamente.')
     }
   }
 
