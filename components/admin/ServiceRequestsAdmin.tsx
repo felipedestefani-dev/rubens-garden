@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import { createPortal } from 'react-dom'
-import { format, addDays, startOfDay, isToday, isTomorrow, getDayNameShort } from 'date-fns'
+import { format, addDays, startOfDay } from 'date-fns'
+import { isToday, isTomorrow, getDayNameShort } from '@/lib/utils'
 import { ptBR } from 'date-fns/locale'
 
 interface ServiceRequest {
