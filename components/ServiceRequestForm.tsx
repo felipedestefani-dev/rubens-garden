@@ -29,10 +29,23 @@ export function ServiceRequestForm() {
   async function fetchServices() {
     try {
       const response = await fetch('/api/services')
+      
+      if (!response.ok) {
+        throw new Error('Erro ao carregar serviços')
+      }
+      
       const data = await response.json()
-      setServices(data.filter((s: Service) => s.active))
+      
+      // Verificar se é um array antes de usar filter
+      if (Array.isArray(data)) {
+        setServices(data.filter((s: Service) => s.active))
+      } else {
+        console.error('Resposta da API não é um array:', data)
+        setServices([])
+      }
     } catch (error) {
       console.error('Erro ao carregar serviços:', error)
+      setServices([])
     } finally {
       setLoading(false)
     }

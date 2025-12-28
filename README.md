@@ -1,5 +1,5 @@
 
-# Rubens Garden
+# Senhor Natureza
 
 Sistema de agendamento para serviços de jardinagem e paisagismo.
 
@@ -170,7 +170,60 @@ Após fazer login na área administrativa, configure:
 - Execute `prisma db push` para criar as tabelas
 - Verifique os logs de build na Vercel
 
+**Erro 500 nas APIs (Erro ao buscar serviços/solicitações/agendamentos):**
+Este é o problema mais comum após o deploy. Significa que o banco de dados não está configurado ou as tabelas não foram criadas.
+
+**Solução passo a passo:**
+
+1. **Configure o banco PostgreSQL na Vercel:**
+   - Acesse o dashboard da Vercel
+   - Vá em seu projeto → "Storage" → "Create Database"
+   - Selecione "Postgres" e crie o banco
+   - A variável `DATABASE_URL` será criada automaticamente
+
+2. **Ou use um serviço externo (Supabase, Neon, etc.):**
+   - Crie uma conta no serviço escolhido
+   - Crie um novo projeto/banco
+   - Copie a string de conexão (DATABASE_URL)
+   - Adicione como variável de ambiente na Vercel
+
+3. **Crie as tabelas no banco:**
+   Após configurar o DATABASE_URL, você precisa criar as tabelas. Você tem duas opções:
+
+   **Opção A - Via Vercel CLI (recomendado):**
+   ```bash
+   # Instale a Vercel CLI se ainda não tiver
+   npm i -g vercel
+   
+   # Conecte ao seu projeto
+   vercel link
+   
+   # Execute as migrações
+   npx prisma db push
+   ```
+
+   **Opção B - Via terminal local:**
+   ```bash
+   # Configure a DATABASE_URL localmente (temporariamente)
+   export DATABASE_URL="sua-string-de-conexao-da-vercel"
+   
+   # Execute as migrações
+   npx prisma db push
+   ```
+
+   **Opção C - Via Prisma Studio (se tiver acesso ao banco):**
+   ```bash
+   npx prisma studio
+   # Crie as tabelas manualmente ou use a interface
+   ```
+
+4. **Verifique se funcionou:**
+   - Acesse sua aplicação na Vercel
+   - As APIs devem retornar arrays vazios `[]` em vez de erros 500
+   - Faça login na área administrativa e adicione alguns dados de teste
+
 **Erro de conexão com banco:**
-- Verifique se a string `DATABASE_URL` está correta
+- Verifique se a string `DATABASE_URL` está correta na Vercel
 - Confirme que o banco aceita conexões externas (se não for Vercel Postgres)
 - Verifique se as credenciais estão corretas
+- Verifique os logs da Vercel para mensagens de erro específicas do Prisma

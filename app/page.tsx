@@ -7,7 +7,7 @@ export default function Home() {
       <header className="bg-gray-800/50 backdrop-blur-sm border-b border-gray-700 shadow-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <h1 className="text-3xl font-bold animated-gradient">
-            Rubens Garden
+            Senhor Natureza
           </h1>
           <p className="text-gray-400 mt-1">Jardinagem e Paisagismo</p>
         </div>
@@ -27,7 +27,7 @@ export default function Home() {
 
       <footer className="mt-16 bg-gray-800/50 backdrop-blur-sm border-t border-gray-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center text-gray-400">
-          <p>© 2024 Rubens Garden. Todos os direitos reservados.</p>
+          <p>© 2024 Senhor Natureza. Todos os direitos reservados.</p>
           <Link href="/admin" className="text-emerald-400 hover:text-emerald-300 mt-2 inline-block transition-colors">
             Área Administrativa
           </Link>

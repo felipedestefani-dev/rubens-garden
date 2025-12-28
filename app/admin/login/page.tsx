@@ -45,7 +45,7 @@ export default function LoginPage() {
       <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl shadow-2xl border border-gray-700 p-8 w-full max-w-md">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold animated-gradient mb-2">
-            Rubens Garden
+            Senhor Natureza
           </h1>
           <p className="text-gray-400">Área Administrativa</p>
         </div>

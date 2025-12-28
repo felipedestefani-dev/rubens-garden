@@ -33,7 +33,7 @@ export default function AdminPage() {
           <div className="flex justify-between items-center">
             <div>
               <h1 className="text-2xl font-bold animated-gradient">
-                Rubens Garden
+                Senhor Natureza
               </h1>
               <p className="text-sm text-gray-400">Área Administrativa</p>
             </div>

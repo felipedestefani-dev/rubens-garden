@@ -5,7 +5,7 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Rubens Garden - Jardinagem e Paisagismo',
+  title: 'Senhor Natureza - Jardinagem e Paisagismo',
   description: 'Agende seus serviços de jardinagem e paisagismo',
 }
 

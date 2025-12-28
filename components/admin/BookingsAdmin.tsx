@@ -35,10 +35,23 @@ export function BookingsAdmin() {
       if (filterDate) params.append('date', filterDate)
 
       const response = await fetch(`/api/admin/bookings?${params.toString()}`)
+      
+      if (!response.ok) {
+        throw new Error('Erro ao buscar agendamentos')
+      }
+      
       const data = await response.json()
-      setBookings(data)
+      
+      // Verificar se é um array antes de usar
+      if (Array.isArray(data)) {
+        setBookings(data)
+      } else {
+        console.error('Resposta da API não é um array:', data)
+        setBookings([])
+      }
     } catch (error) {
       console.error('Erro ao carregar agendamentos:', error)
+      setBookings([])
     } finally {
       setLoading(false)
     }

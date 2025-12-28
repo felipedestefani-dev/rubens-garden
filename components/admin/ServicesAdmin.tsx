@@ -29,10 +29,23 @@ export function ServicesAdmin() {
   async function fetchServices() {
     try {
       const response = await fetch('/api/admin/services')
+      
+      if (!response.ok) {
+        throw new Error('Erro ao buscar serviços')
+      }
+      
       const data = await response.json()
-      setServices(data)
+      
+      // Verificar se é um array antes de usar
+      if (Array.isArray(data)) {
+        setServices(data)
+      } else {
+        console.error('Resposta da API não é um array:', data)
+        setServices([])
+      }
     } catch (error) {
       console.error('Erro ao carregar serviços:', error)
+      setServices([])
     } finally {
       setLoading(false)
     }

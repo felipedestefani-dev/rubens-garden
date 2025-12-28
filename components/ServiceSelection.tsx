@@ -28,9 +28,17 @@ export function ServiceSelection() {
     try {
       const response = await fetch('/api/services')
       const data = await response.json()
-      setServices(data.filter((s: Service) => s.active))
+      
+      // Verificar se é um array antes de usar filter
+      if (Array.isArray(data)) {
+        setServices(data.filter((s: Service) => s.active))
+      } else {
+        console.error('Resposta da API não é um array:', data)
+        setServices([])
+      }
     } catch (error) {
       console.error('Erro ao carregar serviços:', error)
+      setServices([])
     } finally {
       setLoading(false)
     }
