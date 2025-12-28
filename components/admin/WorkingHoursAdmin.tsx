@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { toast } from 'sonner'
 
 interface WorkingHours {
   id: string
@@ -89,7 +90,7 @@ export function WorkingHoursAdmin() {
       await fetchWorkingHours()
     } catch (error) {
       console.error('Erro ao salvar horário:', error)
-      alert('Erro ao salvar horário. Tente novamente.')
+      toast.error('Erro ao salvar horário. Tente novamente.')
     }
   }
 
@@ -116,7 +117,7 @@ export function WorkingHoursAdmin() {
       await fetchWorkingHours()
     } catch (error) {
       console.error('Erro ao atualizar horário:', error)
-      alert('Erro ao atualizar horário. Tente novamente.')
+      toast.error('Erro ao atualizar horário. Tente novamente.')
     }
   }
 
@@ -161,10 +162,10 @@ export function WorkingHoursAdmin() {
           return (
             <div
               key={dayOfWeek}
-              className={`bg-white dark:bg-gray-800 rounded-xl border-2 p-5 transition-all ${
+              className={`bg-white dark:bg-gray-950 rounded-xl border-2 p-5 transition-all ${
                 isActive 
                   ? 'border-emerald-200 dark:border-emerald-700 shadow-sm' 
-                  : 'border-gray-200 dark:border-gray-700'
+                  : 'border-gray-200 dark:border-gray-800'
               }`}
             >
               {/* Day Header */}
@@ -173,7 +174,7 @@ export function WorkingHoursAdmin() {
                 <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium ${
                   isActive
                     ? 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-700'
-                    : 'bg-gray-50 dark:bg-gray-700/50 text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-600'
+                    : 'bg-gray-50 dark:bg-gray-900/50 text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-800'
                 }`}>
                   {isActive ? 'Ativo' : 'Inativo'}
                 </span>
@@ -189,7 +190,7 @@ export function WorkingHoursAdmin() {
                         type="time"
                         value={currentInputs.startTime}
                         onChange={(e) => updateTimeInput(dayOfWeek, 'startTime', e.target.value)}
-                        className="w-full px-4 py-2.5 text-sm border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
+                        className="w-full px-4 py-2.5 text-sm border border-gray-200 dark:border-gray-800 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
                       />
                     </div>
                     <div className="pt-6 text-gray-400 dark:text-gray-500">até</div>
@@ -199,7 +200,7 @@ export function WorkingHoursAdmin() {
                         type="time"
                         value={currentInputs.endTime}
                         onChange={(e) => updateTimeInput(dayOfWeek, 'endTime', e.target.value)}
-                        className="w-full px-4 py-2.5 text-sm border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
+                        className="w-full px-4 py-2.5 text-sm border border-gray-200 dark:border-gray-800 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
                       />
                     </div>
                   </div>
@@ -212,7 +213,7 @@ export function WorkingHoursAdmin() {
                     </button>
                     <button
                       onClick={() => handleToggle(dayOfWeek, true)}
-                      className="px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                      className="px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-900 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors"
                     >
                       Desativar
                     </button>
@@ -220,7 +221,7 @@ export function WorkingHoursAdmin() {
                 </div>
               ) : (
                 <div className="space-y-4">
-                  <div className="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg text-center">
+                  <div className="p-4 bg-gray-50 dark:bg-gray-900/50 rounded-lg text-center">
                     <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">Horário não configurado</p>
                     <div className="flex items-center gap-3">
                       <div className="flex-1">

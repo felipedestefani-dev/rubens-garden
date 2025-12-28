@@ -190,7 +190,7 @@ export function FinanceiroAdmin() {
           <select
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
-            className="px-4 py-2 text-sm border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
+            className="px-4 py-2 text-sm border border-gray-200 dark:border-gray-800 rounded-lg bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
           >
             <option value="">Todos os status</option>
             <option value="pending">Pendente</option>
@@ -202,14 +202,14 @@ export function FinanceiroAdmin() {
             type="date"
             value={filterDate}
             onChange={(e) => setFilterDate(e.target.value)}
-            className="px-4 py-2 text-sm border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
+            className="px-4 py-2 text-sm border border-gray-200 dark:border-gray-800 rounded-lg bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
           />
         </div>
       </div>
 
       {/* Bookings Cards */}
       {safeBookings.length === 0 ? (
-        <div className="text-center py-16 bg-gray-50 dark:bg-gray-800/50 rounded-2xl border-2 border-dashed border-gray-200 dark:border-gray-700">
+        <div className="text-center py-16 bg-gray-50 dark:bg-gray-950/50 rounded-2xl border-2 border-dashed border-gray-200 dark:border-gray-800">
           <svg className="w-12 h-12 text-gray-400 dark:text-gray-500 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
@@ -225,7 +225,7 @@ export function FinanceiroAdmin() {
             return (
               <div
                 key={booking.id}
-                className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5 hover:shadow-lg transition-all duration-200 hover:border-gray-300 dark:hover:border-gray-600"
+                className="bg-white dark:bg-gray-950 rounded-xl border border-gray-200 dark:border-gray-800 p-5 hover:shadow-lg transition-all duration-200 hover:border-gray-300 dark:hover:border-gray-600"
               >
                 {/* Status Badge */}
                 <div className="flex items-center justify-between mb-4">
@@ -247,7 +247,7 @@ export function FinanceiroAdmin() {
                 </div>
 
                 {/* Date & Time */}
-                <div className="mb-4 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+                <div className="mb-4 p-3 bg-gray-50 dark:bg-gray-900/50 rounded-lg">
                   <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Data e Horário</p>
                   <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">
                     {format(new Date(booking.date), "dd 'de' MMMM 'de' yyyy", { locale: ptBR })}
@@ -256,7 +256,7 @@ export function FinanceiroAdmin() {
                 </div>
 
                 {/* Price */}
-                <div className="pt-4 border-t border-gray-100 dark:border-gray-700">
+                <div className="pt-4 border-t border-gray-100 dark:border-gray-800">
                   <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Valor</p>
                   <p className={`text-lg font-bold ${
                     booking.price ? 'text-emerald-600' : 'text-gray-400'

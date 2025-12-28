@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { format } from 'date-fns'
+import { toast } from 'sonner'
 
 interface BookingFormProps {
   serviceId: string
@@ -44,7 +45,7 @@ export function BookingForm({ serviceId, date, time, onSuccess }: BookingFormPro
       onSuccess()
     } catch (error) {
       console.error('Erro ao criar agendamento:', error)
-      alert(error instanceof Error ? error.message : 'Erro ao criar agendamento. Tente novamente.')
+      toast.error(error instanceof Error ? error.message : 'Erro ao criar agendamento. Tente novamente.')
     } finally {
       setSubmitting(false)
     }

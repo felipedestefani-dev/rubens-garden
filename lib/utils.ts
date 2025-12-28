@@ -1,46 +1,39 @@
-import { addDays, format, isSameDay, startOfDay } from 'date-fns'
-import { ptBR } from 'date-fns/locale'
+import { clsx, type ClassValue } from "clsx"
+import { twMerge } from "tailwind-merge"
+import { isToday as dateFnsIsToday, isTomorrow as dateFnsIsTomorrow, format, startOfDay, addDays, getDay } from "date-fns"
+import { ptBR } from "date-fns/locale"
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
+}
+
+export function isToday(date: Date): boolean {
+  return dateFnsIsToday(date)
+}
+
+export function isTomorrow(date: Date): boolean {
+  return dateFnsIsTomorrow(date)
+}
 
 export function formatDate(date: Date): string {
   return format(date, 'dd/MM/yyyy', { locale: ptBR })
-}
-
-export function formatTime(time: string): string {
-  return time
-}
-
-export function getDayName(date: Date): string {
-  return format(date, 'EEEE', { locale: ptBR })
 }
 
 export function getDayNameShort(date: Date): string {
   return format(date, 'EEE', { locale: ptBR })
 }
 
-export function isToday(date: Date): boolean {
-  return isSameDay(date, new Date())
-}
-
-export function isTomorrow(date: Date): boolean {
-  return isSameDay(date, addDays(new Date(), 1))
-}
-
-export function getNextWeekdays(): Date[] {
-  const today = new Date()
+export function getNextWeekdays(count: number = 7): Date[] {
+  const today = startOfDay(new Date())
   const weekdays: Date[] = []
+  let currentDate = today
+  let daysAdded = 0
   
-  // Começa de amanhã
-  let currentDate = addDays(today, 1)
-  
-  // Pega os próximos 5 dias úteis (segunda a sexta)
-  let count = 0
-  while (count < 5 && weekdays.length < 5) {
-    const dayOfWeek = currentDate.getDay()
-    // Ignora domingo (0) e sábado (6)
-    if (dayOfWeek !== 0 && dayOfWeek !== 6) {
-      weekdays.push(startOfDay(currentDate))
-      count++
-    }
+  while (daysAdded < count) {
+    const dayOfWeek = getDay(currentDate)
+    // 0 = Domingo, 6 = Sábado. Vamos incluir todos os dias
+    weekdays.push(new Date(currentDate))
+    daysAdded++
     currentDate = addDays(currentDate, 1)
   }
   
@@ -49,23 +42,24 @@ export function getNextWeekdays(): Date[] {
 
 export function generateTimeSlots(startTime: string, endTime: string, duration: number): string[] {
   const slots: string[] = []
+  
+  // Converter horários para minutos
   const [startHour, startMin] = startTime.split(':').map(Number)
   const [endHour, endMin] = endTime.split(':').map(Number)
   
-  const startTotalMinutes = startHour * 60 + startMin
-  const endTotalMinutes = endHour * 60 + endMin
+  const startMinutes = startHour * 60 + startMin
+  const endMinutes = endHour * 60 + endMin
   
-  let currentTotalMinutes = startTotalMinutes
+  // Gerar slots a cada 'duration' minutos
+  let currentMinutes = startMinutes
   
-  while (currentTotalMinutes + duration <= endTotalMinutes) {
-    const hour = Math.floor(currentTotalMinutes / 60)
-    const min = currentTotalMinutes % 60
-    const timeStr = `${String(hour).padStart(2, '0')}:${String(min).padStart(2, '0')}`
-    slots.push(timeStr)
-    
-    currentTotalMinutes += duration
+  while (currentMinutes + duration <= endMinutes) {
+    const hours = Math.floor(currentMinutes / 60)
+    const minutes = currentMinutes % 60
+    const timeString = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`
+    slots.push(timeString)
+    currentMinutes += duration
   }
   
   return slots
 }
-

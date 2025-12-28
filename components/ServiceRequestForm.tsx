@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { toast } from 'sonner'
 
 interface Service {
   id: string
@@ -57,7 +58,7 @@ export function ServiceRequestForm() {
     e.preventDefault()
     
     if (!selectedService) {
-      alert('Por favor, selecione um serviço')
+      toast.error('Por favor, selecione um serviço')
       return
     }
 
@@ -80,7 +81,7 @@ export function ServiceRequestForm() {
         throw new Error(error.message || error.error || 'Erro ao criar solicitação')
       }
 
-      alert('Solicitação enviada com sucesso! Aguarde a aprovação do autônomo.')
+      toast.success('Solicitação enviada com sucesso! Aguarde a aprovação do autônomo.')
       setFormData({
         clientName: '',
         clientPhone: '',
@@ -90,7 +91,7 @@ export function ServiceRequestForm() {
       setSelectedService('')
     } catch (error) {
       console.error('Erro ao criar solicitação:', error)
-      alert(error instanceof Error ? error.message : 'Erro ao criar solicitação. Tente novamente.')
+      toast.error(error instanceof Error ? error.message : 'Erro ao criar solicitação. Tente novamente.')
     } finally {
       setSubmitting(false)
     }
@@ -109,9 +110,9 @@ export function ServiceRequestForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-5">
+    <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
       <div>
-        <label htmlFor="service" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+        <label htmlFor="service" className="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5 sm:mb-2">
           Serviço
         </label>
         <select
@@ -119,7 +120,7 @@ export function ServiceRequestForm() {
           required
           value={selectedService}
           onChange={(e) => setSelectedService(e.target.value)}
-          className="w-full px-4 py-3 text-sm bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-gray-100 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
+          className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-800 text-gray-900 dark:text-gray-100 rounded-lg sm:rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
         >
           <option value="">Selecione um serviço</option>
           {services.map((service) => (
@@ -140,7 +141,7 @@ export function ServiceRequestForm() {
           required
           value={formData.clientName}
           onChange={(e) => setFormData({ ...formData, clientName: e.target.value })}
-          className="w-full px-4 py-3 text-sm bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-gray-100 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all placeholder-gray-400 dark:placeholder-gray-500"
+          className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-800 text-gray-900 dark:text-gray-100 rounded-lg sm:rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all placeholder-gray-400 dark:placeholder-gray-500"
           placeholder="Seu nome completo"
         />
       </div>
@@ -155,7 +156,7 @@ export function ServiceRequestForm() {
           required
           value={formData.clientPhone}
           onChange={(e) => setFormData({ ...formData, clientPhone: e.target.value })}
-          className="w-full px-4 py-3 text-sm bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-gray-100 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all placeholder-gray-400 dark:placeholder-gray-500"
+          className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-800 text-gray-900 dark:text-gray-100 rounded-lg sm:rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all placeholder-gray-400 dark:placeholder-gray-500"
           placeholder="(00) 00000-0000"
         />
       </div>
@@ -170,7 +171,7 @@ export function ServiceRequestForm() {
           rows={3}
           value={formData.address}
           onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-          className="w-full px-4 py-3 text-sm bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-gray-100 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all resize-none placeholder-gray-400 dark:placeholder-gray-500"
+          className="w-full px-4 py-3 text-sm bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-800 text-gray-900 dark:text-gray-100 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all resize-none placeholder-gray-400 dark:placeholder-gray-500"
           placeholder="Rua, número, bairro, cidade - Estado"
         />
       </div>
@@ -184,7 +185,7 @@ export function ServiceRequestForm() {
           rows={3}
           value={formData.notes}
           onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-          className="w-full px-4 py-3 text-sm bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-gray-100 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all resize-none placeholder-gray-400 dark:placeholder-gray-500"
+          className="w-full px-4 py-3 text-sm bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-800 text-gray-900 dark:text-gray-100 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all resize-none placeholder-gray-400 dark:placeholder-gray-500"
           placeholder="Informações adicionais sobre o serviço..."
         />
       </div>
@@ -192,7 +193,7 @@ export function ServiceRequestForm() {
       <button
         type="submit"
         disabled={submitting}
-        className="w-full py-3.5 text-sm font-medium bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 disabled:bg-gray-300 dark:disabled:bg-gray-600 disabled:cursor-not-allowed transition-all shadow-sm hover:shadow-md"
+        className="w-full py-3 sm:py-3.5 text-sm font-medium bg-emerald-600 text-white rounded-lg sm:rounded-xl hover:bg-emerald-700 disabled:bg-gray-300 dark:disabled:bg-gray-600 disabled:cursor-not-allowed transition-all shadow-sm hover:shadow-md active:scale-[0.98]"
       >
         {submitting ? 'Enviando...' : 'Enviar Solicitação'}
       </button>

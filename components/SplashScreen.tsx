@@ -23,7 +23,7 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
 
   return (
     <div
-      className={`fixed inset-0 z-50 flex items-center justify-center bg-white dark:bg-gray-900 transition-opacity duration-300 ${
+      className={`fixed inset-0 z-50 flex items-center justify-center bg-white dark:bg-black transition-opacity duration-300 ${
         isVisible ? 'opacity-100' : 'opacity-0'
       }`}
     >
@@ -36,7 +36,7 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
           className="w-24 h-24 sm:w-32 sm:h-32"
           priority
         />
-        <div className="h-1 w-32 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+        <div className="h-1 w-32 bg-gray-200 dark:bg-gray-800 rounded-full overflow-hidden">
           <div className="h-full bg-gray-500 dark:bg-gray-400 rounded-full animate-progress" />
         </div>
       </div>

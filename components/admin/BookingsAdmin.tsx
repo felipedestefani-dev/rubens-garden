@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
+import { toast } from 'sonner'
 
 interface Booking {
   id: string
@@ -79,7 +80,7 @@ export function BookingsAdmin() {
       await fetchBookings()
     } catch (error) {
       console.error('Erro ao atualizar status:', error)
-      alert('Erro ao atualizar status. Tente novamente.')
+      toast.error('Erro ao atualizar status. Tente novamente.')
     }
   }
 
@@ -97,7 +98,7 @@ export function BookingsAdmin() {
       setDeleteConfirm(null)
     } catch (error) {
       console.error('Erro ao deletar agendamento:', error)
-      alert('Erro ao deletar agendamento. Tente novamente.')
+      toast.error('Erro ao deletar agendamento. Tente novamente.')
       setDeleteConfirm(null)
     }
   }
@@ -196,7 +197,7 @@ export function BookingsAdmin() {
           <select
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
-            className="px-4 py-2 text-sm border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
+            className="px-4 py-2 text-sm border border-gray-200 dark:border-gray-800 rounded-lg bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
           >
             <option value="">Todos</option>
             <option value="pending">Pendentes</option>
@@ -208,14 +209,14 @@ export function BookingsAdmin() {
             type="date"
             value={filterDate}
             onChange={(e) => setFilterDate(e.target.value)}
-            className="px-4 py-2 text-sm border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
+            className="px-4 py-2 text-sm border border-gray-200 dark:border-gray-800 rounded-lg bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
           />
         </div>
       </div>
 
       {/* Cards Grid */}
       {filteredBookings.length === 0 ? (
-        <div className="text-center py-16 bg-gray-50 dark:bg-gray-800/50 rounded-2xl border-2 border-dashed border-gray-200 dark:border-gray-700">
+        <div className="text-center py-16 bg-gray-50 dark:bg-gray-950/50 rounded-2xl border-2 border-dashed border-gray-200 dark:border-gray-800">
           <svg className="w-12 h-12 text-gray-400 dark:text-gray-500 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
           </svg>
@@ -231,7 +232,7 @@ export function BookingsAdmin() {
             return (
               <div
                 key={booking.id}
-                className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5 hover:shadow-lg transition-all duration-200 hover:border-gray-300 dark:hover:border-gray-600"
+                className="bg-white dark:bg-gray-950 rounded-xl border border-gray-200 dark:border-gray-800 p-5 hover:shadow-lg transition-all duration-200 hover:border-gray-300 dark:hover:border-gray-600"
               >
                 {/* Status Badge */}
                 <div className="flex items-center justify-between mb-4">
@@ -262,7 +263,7 @@ export function BookingsAdmin() {
                 </div>
 
                 {/* Date & Time */}
-                <div className="mb-4 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+                <div className="mb-4 p-3 bg-gray-50 dark:bg-gray-900/50 rounded-lg">
                   <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Data e Horário</p>
                   <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">
                     {format(new Date(booking.date), "dd 'de' MMMM 'de' yyyy", { locale: ptBR })}
@@ -279,7 +280,7 @@ export function BookingsAdmin() {
                 )}
 
                 {/* Actions */}
-                <div className="flex items-center gap-2 pt-4 border-t border-gray-100 dark:border-gray-700">
+                <div className="flex items-center gap-2 pt-4 border-t border-gray-100 dark:border-gray-800">
                   <select
                     value={booking.status}
                     onChange={(e) => handleStatusChange(booking.id, e.target.value)}
@@ -308,7 +309,7 @@ export function BookingsAdmin() {
       {/* Delete Confirm Modal */}
       {deleteConfirm && mounted && createPortal(
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-md w-full">
+          <div className="bg-white dark:bg-gray-950 rounded-2xl shadow-2xl max-w-md w-full">
             <div className="p-6">
               <div className="flex items-center gap-4 mb-6">
                 <div className="flex-shrink-0 w-12 h-12 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center">
@@ -329,7 +330,7 @@ export function BookingsAdmin() {
               <div className="flex gap-3">
                 <button
                   onClick={() => setDeleteConfirm(null)}
-                  className="flex-1 px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                  className="flex-1 px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-900 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors"
                 >
                   Cancelar
                 </button>

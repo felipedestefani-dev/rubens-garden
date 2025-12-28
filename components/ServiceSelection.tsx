@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { DateSelection } from './DateSelection'
 import { TimeSelection } from './TimeSelection'
 import { BookingForm } from './BookingForm'
+import { toast } from 'sonner'
 
 interface Service {
   id: string
@@ -165,7 +166,7 @@ export function ServiceSelection() {
         date={selectedDate}
         time={selectedTime}
         onSuccess={() => {
-          alert('Agendamento realizado com sucesso!')
+          toast.success('Agendamento realizado com sucesso!')
           setSelectedService(null)
           setSelectedDate(null)
           setSelectedTime(null)

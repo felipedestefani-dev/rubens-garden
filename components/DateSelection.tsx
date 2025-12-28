@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { getNextWeekdays, isToday, isTomorrow, formatDate, getDayNameShort } from '@/lib/utils'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
+import { toast } from 'sonner'
 
 interface DateSelectionProps {
   serviceId: string
@@ -56,11 +57,11 @@ export function DateSelection({ serviceId, onDateSelect }: DateSelectionProps) {
       if (data.available && data.hasSlots) {
         onDateSelect(selectedDate)
       } else {
-        alert('Esta data não está disponível para agendamento.')
+        toast.error('Esta data não está disponível para agendamento.')
       }
     } catch (error) {
       console.error('Erro ao verificar disponibilidade:', error)
-      alert('Erro ao verificar disponibilidade. Tente novamente.')
+      toast.error('Erro ao verificar disponibilidade. Tente novamente.')
     }
   }
 
