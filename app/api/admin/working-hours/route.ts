@@ -19,39 +19,13 @@ export async function GET() {
       },
     })
 
-    // Sempre retornar um array, mesmo que vazio
+    // Sempre retornar um array
     return NextResponse.json(Array.isArray(workingHours) ? workingHours : [])
   } catch (error) {
     console.error('Erro ao buscar horários:', error)
     
-    // Em caso de erro, retornar array vazio em vez de objeto de erro
-    // para manter consistência com o frontend
-    if (error instanceof Error) {
-      // Verificar erros específicos do Prisma
-      if (error.message.includes('P1001') || error.message.includes('Can\'t reach database server')) {
-        return NextResponse.json(
-          { 
-            error: 'Erro de conexão com banco de dados',
-            details: 'Não foi possível conectar ao banco PostgreSQL. Verifique se o DATABASE_URL está correto.',
-            code: 'DATABASE_CONNECTION_ERROR'
-          },
-          { status: 500 }
-        )
-      }
-      
-      if (error.message.includes('P2025') || error.message.includes('table') || error.message.includes('does not exist')) {
-        return NextResponse.json(
-          { 
-            error: 'Tabelas do banco de dados não encontradas',
-            details: 'Execute: npx prisma db push ou npm run db:setup',
-            code: 'SCHEMA_ERROR'
-          },
-          { status: 500 }
-        )
-      }
-    }
-    
-    // Retornar array vazio para não quebrar o frontend
+    // Sempre retornar array vazio em caso de erro para não quebrar o frontend
+    // O componente já trata erros de forma adequada
     return NextResponse.json([])
   }
 }
