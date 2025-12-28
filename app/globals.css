@@ -37,6 +37,16 @@ body {
   background: rgb(107, 114, 128);
 }
 
+/* Esconder scrollbar mas manter funcionalidade */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
 /* Animação de gradiente verde para o nome */
 @keyframes gradient-shift {
   0%, 100% {

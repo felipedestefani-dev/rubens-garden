@@ -8,7 +8,8 @@ const loginSchema = z.object({
 })
 
 // Credenciais do administrador (em produção, use variáveis de ambiente)
-const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin'
+// Suporta tanto ADMIN_USERNAME quanto USERNAME para compatibilidade
+const ADMIN_USERNAME = process.env.ADMIN_USERNAME || process.env.USERNAME || 'admin'
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123'
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production'
 

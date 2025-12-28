@@ -30,6 +30,12 @@ export function WorkingHoursAdmin() {
   }, [])
 
   useEffect(() => {
+    // Garantir que workingHours seja um array antes de usar find
+    if (!Array.isArray(workingHours)) {
+      setTimeInputs({})
+      return
+    }
+    
     const inputs: Record<number, { startTime: string; endTime: string }> = {}
     DAYS.forEach((_, dayOfWeek) => {
       const existing = workingHours.find((wh) => wh.dayOfWeek === dayOfWeek)
@@ -44,10 +50,23 @@ export function WorkingHoursAdmin() {
   async function fetchWorkingHours() {
     try {
       const response = await fetch('/api/admin/working-hours')
+      
+      if (!response.ok) {
+        throw new Error('Erro ao buscar horários')
+      }
+      
       const data = await response.json()
-      setWorkingHours(data)
+      
+      // Garantir que sempre seja um array
+      if (Array.isArray(data)) {
+        setWorkingHours(data)
+      } else {
+        console.error('Resposta da API não é um array:', data)
+        setWorkingHours([])
+      }
     } catch (error) {
       console.error('Erro ao carregar horários:', error)
+      setWorkingHours([]) // Garantir que seja um array vazio em caso de erro
     } finally {
       setLoading(false)
     }
@@ -77,6 +96,9 @@ export function WorkingHoursAdmin() {
   }
 
   async function handleToggle(dayOfWeek: number, isActive: boolean) {
+    // Garantir que workingHours seja um array antes de usar find
+    if (!Array.isArray(workingHours)) return
+    
     const existing = workingHours.find((wh) => wh.dayOfWeek === dayOfWeek)
     if (!existing) return
 
@@ -121,7 +143,10 @@ export function WorkingHoursAdmin() {
 
       <div className="space-y-4">
         {DAYS.map((dayName, dayOfWeek) => {
-          const existing = workingHours.find((wh) => wh.dayOfWeek === dayOfWeek)
+          // Garantir que workingHours seja um array antes de usar find
+          const existing = Array.isArray(workingHours) 
+            ? workingHours.find((wh) => wh.dayOfWeek === dayOfWeek)
+            : null
           const currentInputs = timeInputs[dayOfWeek] || { startTime: '08:00', endTime: '18:00' }
 
           return (

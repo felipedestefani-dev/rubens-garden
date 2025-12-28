@@ -127,13 +127,13 @@ export function BookingsAdmin() {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-semibold text-gray-100">Agendamentos</h2>
-        <div className="flex gap-4">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+        <h2 className="text-xl sm:text-2xl font-semibold text-gray-100">Agendamentos</h2>
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 w-full sm:w-auto">
           <select
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
-            className="px-3 py-2 bg-gray-700 border border-gray-600 text-gray-100 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
+            className="px-3 py-2 bg-gray-700 border border-gray-600 text-gray-100 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors text-sm sm:text-base w-full sm:w-auto"
           >
             <option value="">Todos os status</option>
             <option value="pending">Pendente</option>
@@ -145,7 +145,7 @@ export function BookingsAdmin() {
             type="date"
             value={filterDate}
             onChange={(e) => setFilterDate(e.target.value)}
-            className="px-3 py-2 bg-gray-700 border border-gray-600 text-gray-100 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
+            className="px-3 py-2 bg-gray-700 border border-gray-600 text-gray-100 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors text-sm sm:text-base w-full sm:w-auto"
           />
         </div>
       </div>
@@ -154,19 +154,19 @@ export function BookingsAdmin() {
         <table className="min-w-full divide-y divide-gray-700">
           <thead className="bg-gray-700/50">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+              <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                 Cliente
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+              <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                 Serviço
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+              <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                 Data/Hora
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+              <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                 Status
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+              <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                 Ações
               </th>
             </tr>
@@ -174,27 +174,27 @@ export function BookingsAdmin() {
           <tbody className="bg-gray-800/30 divide-y divide-gray-700">
             {bookings.length === 0 ? (
               <tr>
-                <td colSpan={5} className="px-6 py-4 text-center text-gray-400">
+                <td colSpan={5} className="px-3 sm:px-6 py-4 text-center text-gray-400 text-sm">
                   Nenhum agendamento encontrado
                 </td>
               </tr>
             ) : (
               bookings.map((booking) => (
                 <tr key={booking.id} className="hover:bg-gray-700/30 transition-colors">
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm font-medium text-gray-100">{booking.clientName}</div>
-                    <div className="text-sm text-gray-400">{booking.clientPhone}</div>
+                  <td className="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap">
+                    <div className="text-xs sm:text-sm font-medium text-gray-100">{booking.clientName}</div>
+                    <div className="text-xs sm:text-sm text-gray-400">{booking.clientPhone}</div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-100">
+                  <td className="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-100">
                     {booking.service.name}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
+                  <td className="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-400">
                     <div>
                       {format(new Date(booking.date), "dd 'de' MMMM 'de' yyyy", { locale: ptBR })}
                     </div>
                     <div className="font-medium text-gray-300">{booking.time}</div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
+                  <td className="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap">
                     <select
                       value={booking.status}
                       onChange={(e) => handleStatusChange(booking.id, e.target.value)}
@@ -206,7 +206,7 @@ export function BookingsAdmin() {
                       <option value="completed">Concluído</option>
                     </select>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                  <td className="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm font-medium">
                     <button
                       onClick={() => handleDelete(booking.id)}
                       className="text-red-400 hover:text-red-300 transition-colors"

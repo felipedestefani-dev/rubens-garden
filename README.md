@@ -50,8 +50,15 @@ Crie um arquivo `.env.local` na raiz do projeto:
 DATABASE_URL="file:./prisma/dev.db"  # Para desenvolvimento local
 # DATABASE_URL="postgresql://user:password@host:port/database"  # Para produção
 
+# Para Supabase com connection pooling (pgbouncer), use:
+# DATABASE_URL="postgresql://...pooler.supabase.com:6543/...?pgbouncer=true"
+# DIRECT_URL="postgresql://...pooler.supabase.com:5432/..."  # Conexão direta para migrações
+
 # Credenciais do administrador
+# Suporta tanto ADMIN_USERNAME quanto USERNAME
 ADMIN_USERNAME=admin
+# ou
+USERNAME=admin
 ADMIN_PASSWORD=sua-senha-segura
 JWT_SECRET=sua-chave-secreta-jwt
 ```
@@ -59,6 +66,10 @@ JWT_SECRET=sua-chave-secreta-jwt
 **Nota:** Se não criar o arquivo `.env.local`, as credenciais padrão serão:
 - Usuário: `admin`
 - Senha: `admin123`
+
+**Importante para Supabase:**
+- `DATABASE_URL`: Use a URL do pooler (porta 6543) para queries normais
+- `DIRECT_URL`: Use a conexão direta (porta 5432) para migrações. Se não estiver usando pooling, defina igual ao `DATABASE_URL`
 
 4. Inicie o servidor de desenvolvimento:
 ```bash
@@ -188,9 +199,13 @@ Este é o problema mais comum após o deploy. Significa que o banco de dados nã
    - Adicione como variável de ambiente na Vercel
 
 3. **Crie as tabelas no banco:**
-   Após configurar o DATABASE_URL, você precisa criar as tabelas. Você tem duas opções:
+   O script de build tenta criar as tabelas automaticamente, mas se isso falhar, você precisa criá-las manualmente:
 
-   **Opção A - Via Vercel CLI (recomendado):**
+   **Opção A - Automático (tentado durante o build):**
+   O script `vercel-build.js` tenta criar as tabelas automaticamente durante cada deploy.
+   Se isso falhar, use uma das opções abaixo.
+
+   **Opção B - Via Vercel CLI (recomendado se automático falhar):**
    ```bash
    # Instale a Vercel CLI se ainda não tiver
    npm i -g vercel
@@ -198,20 +213,24 @@ Este é o problema mais comum após o deploy. Significa que o banco de dados nã
    # Conecte ao seu projeto
    vercel link
    
-   # Execute as migrações
+   # Execute o script de setup
+   npm run db:setup
+   # Ou diretamente:
    npx prisma db push
    ```
 
-   **Opção B - Via terminal local:**
+   **Opção C - Via terminal local:**
    ```bash
    # Configure a DATABASE_URL localmente (temporariamente)
    export DATABASE_URL="sua-string-de-conexao-da-vercel"
    
-   # Execute as migrações
+   # Execute o script de setup
+   npm run db:setup
+   # Ou diretamente:
    npx prisma db push
    ```
 
-   **Opção C - Via Prisma Studio (se tiver acesso ao banco):**
+   **Opção D - Via Prisma Studio (se tiver acesso ao banco):**
    ```bash
    npx prisma studio
    # Crie as tabelas manualmente ou use a interface
