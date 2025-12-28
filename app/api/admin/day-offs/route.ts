@@ -8,6 +8,8 @@ const dayOffSchema = z.object({
   reason: z.string().optional(),
 })
 
+export const dynamic = 'force-dynamic'
+
 export async function GET() {
   try {
     const dayOffs = await prisma.dayOff.findMany({

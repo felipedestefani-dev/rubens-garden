@@ -9,6 +9,8 @@ const workingHoursSchema = z.object({
   isActive: z.boolean().optional(),
 })
 
+export const dynamic = 'force-dynamic'
+
 export async function GET() {
   try {
     const workingHours = await prisma.workingHours.findMany({

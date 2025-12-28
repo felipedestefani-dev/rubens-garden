@@ -9,6 +9,8 @@ const serviceSchema = z.object({
   active: z.boolean().optional(),
 })
 
+export const dynamic = 'force-dynamic'
+
 export async function PUT(
   request: NextRequest,
   { params }: { params: { id: string } }

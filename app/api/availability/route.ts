@@ -3,6 +3,8 @@ import { prisma } from '@/lib/prisma'
 import { generateTimeSlots } from '@/lib/utils'
 import { parse, format, isSameDay, startOfDay } from 'date-fns'
 
+export const dynamic = 'force-dynamic'
+
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams

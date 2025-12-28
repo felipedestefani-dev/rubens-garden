@@ -9,6 +9,8 @@ const serviceSchema = z.object({
   active: z.boolean().optional(),
 })
 
+export const dynamic = 'force-dynamic'
+
 export async function GET() {
   try {
     const services = await prisma.service.findMany({
