@@ -144,6 +144,20 @@ export async function POST(request: NextRequest) {
         )
       }
       
+      if (error.message.includes('Authentication failed') || error.message.includes('credentials') || error.message.includes('not valid')) {
+        console.error('[API POST /api/admin/services] Erro de autenticação detectado')
+        return NextResponse.json(
+          { 
+            error: 'Erro de autenticação com banco de dados',
+            details: 'As credenciais do banco de dados estão inválidas ou expiradas.',
+            code: 'DATABASE_AUTH_ERROR',
+            solution: '1. Acesse o Supabase Dashboard → Settings → Database\n2. Copie a Connection string atualizada\n3. Ou resete a senha do banco (Database password → Reset)\n4. Atualize DATABASE_URL e DIRECT_URL no .env.local\n5. Reinicie o servidor (npm run dev)',
+            testCommand: 'Execute: npm run db:test para diagnosticar o problema'
+          },
+          { status: 500 }
+        )
+      }
+      
       if (error.message.includes('P2002') || error.message.includes('Unique constraint')) {
         console.error('[API POST /api/admin/services] Erro de constraint único detectado')
         return NextResponse.json(

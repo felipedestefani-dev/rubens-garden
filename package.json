@@ -14,6 +14,7 @@
     "db:setup": "node scripts/setup-db.js",
     "db:push:quick": "prisma db push --skip-generate --accept-data-loss",
     "db:studio": "prisma studio",
+    "db:test": "node scripts/test-connection.js",
     "postinstall": "prisma generate"
   },
   "dependencies": {
@@ -31,6 +32,7 @@
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "autoprefixer": "^10.4.19",
+    "dotenv": "^17.2.3",
     "eslint": "^8.57.0",
     "eslint-config-next": "14.2.5",
     "postcss": "^8.4.40",

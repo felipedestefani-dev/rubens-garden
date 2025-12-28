@@ -4,8 +4,8 @@
 
 :root {
   --foreground-rgb: 255, 255, 255;
-  --background-start-rgb: 17, 24, 39;
-  --background-end-rgb: 31, 41, 55;
+  --background-start-rgb: 2, 6, 23;  /* slate-950 */
+  --background-end-rgb: 3, 7, 18;    /* blue-950 */
 }
 
 body {
@@ -19,22 +19,22 @@ body {
   min-height: 100vh;
 }
 
-/* Scrollbar personalizado para tema dark */
+/* Scrollbar personalizado para tema dark azul */
 ::-webkit-scrollbar {
   width: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: rgb(31, 41, 55);
+  background: rgb(2, 6, 23);  /* slate-950 */
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgb(75, 85, 99);
+  background: rgb(30, 58, 138);  /* blue-800 */
   border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgb(107, 114, 128);
+  background: rgb(37, 99, 235);  /* blue-600 */
 }
 
 /* Esconder scrollbar mas manter funcionalidade */
@@ -47,31 +47,40 @@ body {
   display: none;
 }
 
-/* Animação de gradiente verde para o nome */
+/* Animação de gradiente verde para o nome - movimento horizontal */
 @keyframes gradient-shift {
-  0%, 100% {
+  0% {
     background-position: 0% 50%;
   }
-  50% {
-    background-position: 100% 50%;
+  100% {
+    background-position: 200% 50%;
   }
 }
 
 .animated-gradient {
   background: linear-gradient(
-    -45deg,
-    #65a30d,  /* Verde limão escuro */
+    90deg,
+    #059669,  /* Verde esmeralda escuro */
+    #10b981,  /* Verde esmeralda */
+    #34d399,  /* Verde esmeralda claro */
+    #6ee7b7,  /* Verde menta */
     #84cc16,  /* Verde limão */
     #a3e635,  /* Verde limão médio */
     #bef264,  /* Verde limão claro */
     #a3e635,  /* Verde limão médio */
     #84cc16,  /* Verde limão */
-    #65a30d   /* Verde limão escuro */
+    #6ee7b7,  /* Verde menta */
+    #34d399,  /* Verde esmeralda claro */
+    #10b981,  /* Verde esmeralda */
+    #059669,  /* Verde esmeralda escuro */
+    #10b981,  /* Verde esmeralda */
+    #34d399,  /* Verde esmeralda claro */
+    #6ee7b7   /* Verde menta */
   );
-  background-size: 300% 300%;
+  background-size: 200% 100%;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: gradient-shift 5s ease infinite;
+  animation: gradient-shift 3s linear infinite;
 }
 

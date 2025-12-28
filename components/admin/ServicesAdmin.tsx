@@ -134,7 +134,21 @@ export function ServicesAdmin() {
             code: errorData.code,
             details: errorData.details
           })
-          throw new Error(errorData.error || errorData.details || `Erro ${response.status}: ${response.statusText}`)
+          
+          // Mensagem mais detalhada para erros de banco de dados
+          let errorMessage = errorData.error || errorData.details || `Erro ${response.status}: ${response.statusText}`
+          
+          if (errorData.code === 'DATABASE_AUTH_ERROR' || errorData.code === 'DATABASE_CONNECTION_ERROR') {
+            errorMessage = `Erro de conexão com banco de dados.\n\n` +
+              `Solução:\n` +
+              `1. Acesse o Supabase Dashboard\n` +
+              `2. Copie a Connection string atualizada\n` +
+              `3. Atualize DATABASE_URL e DIRECT_URL no .env.local\n` +
+              `4. Reinicie o servidor (Ctrl+C e npm run dev)\n\n` +
+              `Execute: npm run db:test para diagnosticar`
+          }
+          
+          throw new Error(errorMessage)
         }
 
         const createdService = await response.json()
