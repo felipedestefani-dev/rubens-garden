@@ -144,7 +144,7 @@ export function ServicesAdmin() {
       <div className="flex items-center justify-center py-20">
         <div className="text-center">
           <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-600 mb-4"></div>
-          <p className="text-gray-500 text-sm">Carregando serviços...</p>
+          <p className="text-gray-500 dark:text-gray-400 text-sm">Carregando serviços...</p>
         </div>
       </div>
     )
@@ -155,8 +155,8 @@ export function ServicesAdmin() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900">Serviços</h2>
-          <p className="text-sm text-gray-500 mt-1">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Serviços</h2>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
             {services.length} serviço{services.length !== 1 ? 's' : ''} cadastrado{services.length !== 1 ? 's' : ''} • {' '}
             {services.filter(s => s.active).length} ativo{services.filter(s => s.active).length !== 1 ? 's' : ''}
           </p>
@@ -171,26 +171,26 @@ export function ServicesAdmin() {
 
       {/* Cards Grid */}
       {services.length === 0 ? (
-        <div className="text-center py-16 bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200">
-          <svg className="w-12 h-12 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="text-center py-16 bg-gray-50 dark:bg-gray-800/50 rounded-2xl border-2 border-dashed border-gray-200 dark:border-gray-700">
+          <svg className="w-12 h-12 text-gray-400 dark:text-gray-500 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
           </svg>
-          <p className="text-gray-500 font-medium">Nenhum serviço cadastrado</p>
-          <p className="text-gray-400 text-sm mt-1">Clique em "Novo Serviço" para começar</p>
+          <p className="text-gray-500 dark:text-gray-400 font-medium">Nenhum serviço cadastrado</p>
+          <p className="text-gray-400 dark:text-gray-500 text-sm mt-1">Clique em "Novo Serviço" para começar</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {services.map((service) => (
             <div
               key={service.id}
-              className="bg-white rounded-xl border border-gray-200 p-5 hover:shadow-lg transition-all duration-200 hover:border-gray-300"
+              className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5 hover:shadow-lg transition-all duration-200 hover:border-gray-300 dark:hover:border-gray-600"
             >
               {/* Status Badge */}
               <div className="flex items-center justify-between mb-4">
                 <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium ${
                   service.active
                     ? 'bg-emerald-50 text-emerald-600 border border-emerald-200'
-                    : 'bg-gray-50 text-gray-600 border border-gray-200'
+                    : 'bg-gray-50 dark:bg-gray-700/50 text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-600'
                 }`}>
                   {service.active ? (
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -207,20 +207,20 @@ export function ServicesAdmin() {
 
               {/* Service Name */}
               <div className="mb-4">
-                <p className="text-lg font-bold text-gray-900">{service.name}</p>
+                <p className="text-lg font-bold text-gray-900 dark:text-gray-100">{service.name}</p>
                 {service.description && (
-                  <p className="text-sm text-gray-600 mt-2 line-clamp-2">{service.description}</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mt-2 line-clamp-2">{service.description}</p>
                 )}
               </div>
 
               {/* Duration */}
-              <div className="mb-4 p-3 bg-gray-50 rounded-lg">
-                <p className="text-xs text-gray-500 mb-1">Duração</p>
-                <p className="text-sm font-semibold text-gray-900">{service.duration} minutos</p>
+              <div className="mb-4 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+                <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Duração</p>
+                <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">{service.duration} minutos</p>
               </div>
 
               {/* Actions */}
-              <div className="flex items-center gap-2 pt-4 border-t border-gray-100">
+              <div className="flex items-center gap-2 pt-4 border-t border-gray-100 dark:border-gray-700">
                 <button
                   onClick={() => handleEdit(service)}
                   className="flex-1 px-4 py-2 text-sm font-medium text-white bg-emerald-600 rounded-lg hover:bg-emerald-700 transition-colors"
@@ -244,15 +244,15 @@ export function ServicesAdmin() {
       {/* Form Modal */}
       {showForm && mounted && createPortal(
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4 overflow-y-auto">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full my-8">
-            <div className="p-6 border-b border-gray-200">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-lg w-full my-8">
+            <div className="p-6 border-b border-gray-200 dark:border-gray-700">
               <div className="flex items-center justify-between">
-                <h3 className="text-xl font-bold text-gray-900">
+                <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">
                   {editingService ? 'Editar Serviço' : 'Novo Serviço'}
                 </h3>
                 <button
                   onClick={handleCancel}
-                  className="text-gray-400 hover:text-gray-600 transition-colors"
+                  className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
                 >
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -263,7 +263,7 @@ export function ServicesAdmin() {
 
             <form onSubmit={handleSubmit} className="p-6 space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Nome *
                 </label>
                 <input
@@ -271,13 +271,13 @@ export function ServicesAdmin() {
                   required
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-4 py-3 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
+                  className="w-full px-4 py-3 text-sm border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all placeholder-gray-400 dark:placeholder-gray-500"
                   placeholder="Nome do serviço"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Descrição
                 </label>
                 <textarea
@@ -290,7 +290,7 @@ export function ServicesAdmin() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Duração (minutos) *
                 </label>
                 <input
@@ -299,7 +299,7 @@ export function ServicesAdmin() {
                   min="1"
                   value={formData.duration}
                   onChange={(e) => setFormData({ ...formData, duration: Number(e.target.value) })}
-                  className="w-full px-4 py-3 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
+                  className="w-full px-4 py-3 text-sm border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all placeholder-gray-400 dark:placeholder-gray-500"
                 />
               </div>
 
@@ -311,7 +311,7 @@ export function ServicesAdmin() {
                   onChange={(e) => setFormData({ ...formData, active: e.target.checked })}
                   className="mr-3 w-4 h-4 text-emerald-600 border-gray-300 rounded focus:ring-emerald-500"
                 />
-                <label htmlFor="active" className="text-sm text-gray-700">
+                <label htmlFor="active" className="text-sm text-gray-700 dark:text-gray-300">
                   Serviço ativo
                 </label>
               </div>
@@ -326,7 +326,7 @@ export function ServicesAdmin() {
                 <button
                   type="button"
                   onClick={handleCancel}
-                  className="px-6 py-3 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+                  className="px-6 py-3 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
                 >
                   Cancelar
                 </button>
@@ -340,7 +340,7 @@ export function ServicesAdmin() {
       {/* Delete Confirm Modal */}
       {deleteConfirm && mounted && createPortal(
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-md w-full">
             <div className="p-6">
               <div className="flex items-center gap-4 mb-6">
                 <div className="flex-shrink-0 w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
@@ -349,19 +349,19 @@ export function ServicesAdmin() {
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-gray-900">Confirmar Exclusão</h3>
-                  <p className="text-sm text-gray-500 mt-1">Esta ação não pode ser desfeita</p>
+                  <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">Confirmar Exclusão</h3>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Esta ação não pode ser desfeita</p>
                 </div>
               </div>
               
-              <p className="text-gray-700 mb-6">
+              <p className="text-gray-700 dark:text-gray-300 mb-6">
                 Tem certeza que deseja deletar o serviço <span className="font-semibold">{deleteConfirm.name}</span>?
               </p>
 
               <div className="flex gap-3">
                 <button
                   onClick={() => setDeleteConfirm(null)}
-                  className="flex-1 px-4 py-2.5 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+                  className="flex-1 px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
                 >
                   Cancelar
                 </button>

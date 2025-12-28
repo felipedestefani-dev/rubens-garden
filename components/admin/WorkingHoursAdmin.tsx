@@ -135,7 +135,7 @@ export function WorkingHoursAdmin() {
       <div className="flex items-center justify-center py-20">
         <div className="text-center">
           <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-600 mb-4"></div>
-          <p className="text-gray-500 text-sm">Carregando horários...</p>
+          <p className="text-gray-500 dark:text-gray-400 text-sm">Carregando horários...</p>
         </div>
       </div>
     )
@@ -145,8 +145,8 @@ export function WorkingHoursAdmin() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h2 className="text-2xl font-bold text-gray-900">Horários de Funcionamento</h2>
-        <p className="text-sm text-gray-500 mt-1">Configure os horários de atendimento para cada dia da semana</p>
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Horários de Funcionamento</h2>
+        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Configure os horários de atendimento para cada dia da semana</p>
       </div>
 
       {/* Days Grid */}
@@ -161,19 +161,19 @@ export function WorkingHoursAdmin() {
           return (
             <div
               key={dayOfWeek}
-              className={`bg-white rounded-xl border-2 p-5 transition-all ${
+              className={`bg-white dark:bg-gray-800 rounded-xl border-2 p-5 transition-all ${
                 isActive 
-                  ? 'border-emerald-200 shadow-sm' 
-                  : 'border-gray-200'
+                  ? 'border-emerald-200 dark:border-emerald-700 shadow-sm' 
+                  : 'border-gray-200 dark:border-gray-700'
               }`}
             >
               {/* Day Header */}
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold text-gray-900">{dayName}</h3>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">{dayName}</h3>
                 <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium ${
                   isActive
-                    ? 'bg-emerald-50 text-emerald-600 border border-emerald-200'
-                    : 'bg-gray-50 text-gray-600 border border-gray-200'
+                    ? 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-700'
+                    : 'bg-gray-50 dark:bg-gray-700/50 text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-600'
                 }`}>
                   {isActive ? 'Ativo' : 'Inativo'}
                 </span>
@@ -184,22 +184,22 @@ export function WorkingHoursAdmin() {
                 <div className="space-y-4">
                   <div className="flex items-center gap-3">
                     <div className="flex-1">
-                      <label className="block text-xs text-gray-500 mb-1">Início</label>
+                      <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">Início</label>
                       <input
                         type="time"
                         value={currentInputs.startTime}
                         onChange={(e) => updateTimeInput(dayOfWeek, 'startTime', e.target.value)}
-                        className="w-full px-4 py-2.5 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
+                        className="w-full px-4 py-2.5 text-sm border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
                       />
                     </div>
-                    <div className="pt-6 text-gray-400">até</div>
+                    <div className="pt-6 text-gray-400 dark:text-gray-500">até</div>
                     <div className="flex-1">
-                      <label className="block text-xs text-gray-500 mb-1">Fim</label>
+                      <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">Fim</label>
                       <input
                         type="time"
                         value={currentInputs.endTime}
                         onChange={(e) => updateTimeInput(dayOfWeek, 'endTime', e.target.value)}
-                        className="w-full px-4 py-2.5 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
+                        className="w-full px-4 py-2.5 text-sm border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
                       />
                     </div>
                   </div>
@@ -212,7 +212,7 @@ export function WorkingHoursAdmin() {
                     </button>
                     <button
                       onClick={() => handleToggle(dayOfWeek, true)}
-                      className="px-4 py-2.5 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+                      className="px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
                     >
                       Desativar
                     </button>
@@ -220,8 +220,8 @@ export function WorkingHoursAdmin() {
                 </div>
               ) : (
                 <div className="space-y-4">
-                  <div className="p-4 bg-gray-50 rounded-lg text-center">
-                    <p className="text-sm text-gray-500 mb-3">Horário não configurado</p>
+                  <div className="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg text-center">
+                    <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">Horário não configurado</p>
                     <div className="flex items-center gap-3">
                       <div className="flex-1">
                         <label className="block text-xs text-gray-500 mb-1">Início</label>

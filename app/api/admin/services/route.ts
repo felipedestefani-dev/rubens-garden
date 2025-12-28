@@ -61,19 +61,43 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   const startTime = Date.now()
+  console.log('\n========== [API POST /api/admin/services] ==========')
   console.log('[API POST /api/admin/services] Iniciando criação de serviço...')
+  console.log('[API POST /api/admin/services] Timestamp:', new Date().toISOString())
   
   try {
-    // Verificar DATABASE_URL
+    // Verificar variáveis de ambiente
+    console.log('[API POST /api/admin/services] Verificando variáveis de ambiente...')
+    console.log('[API POST /api/admin/services] DATABASE_URL existe?', !!process.env.DATABASE_URL)
+    console.log('[API POST /api/admin/services] DIRECT_URL existe?', !!process.env.DIRECT_URL)
+    console.log('[API POST /api/admin/services] NODE_ENV:', process.env.NODE_ENV)
+    
     if (!process.env.DATABASE_URL) {
       console.error('[API POST /api/admin/services] ❌ DATABASE_URL não está configurado!')
+      console.error('[API POST /api/admin/services] Variáveis de ambiente disponíveis:', Object.keys(process.env).filter(k => k.includes('DATABASE') || k.includes('DIRECT')))
       return NextResponse.json(
         { 
           error: 'DATABASE_URL não configurado',
-          details: 'A variável de ambiente DATABASE_URL não está definida.'
+          details: 'A variável de ambiente DATABASE_URL não está definida.',
+          availableEnvVars: Object.keys(process.env).filter(k => k.includes('DATABASE') || k.includes('DIRECT'))
         },
         { status: 500 }
       )
+    }
+
+    // Testar conexão antes de criar
+    console.log('[API POST /api/admin/services] Testando conexão com banco...')
+    try {
+      await prisma.$connect()
+      console.log('[API POST /api/admin/services] ✅ Conexão estabelecida com sucesso')
+    } catch (connectError) {
+      console.error('[API POST /api/admin/services] ❌ Erro ao conectar:', connectError)
+      if (connectError instanceof Error) {
+        console.error('[API POST /api/admin/services] Erro message:', connectError.message)
+        console.error('[API POST /api/admin/services] Erro code:', (connectError as any).code)
+        console.error('[API POST /api/admin/services] Erro meta:', (connectError as any).meta)
+      }
+      throw connectError
     }
 
     console.log('[API POST /api/admin/services] Lendo body da requisição...')
@@ -90,6 +114,13 @@ export async function POST(request: NextRequest) {
     console.log('[API POST /api/admin/services] ✅ Dados validados:', validatedData)
 
     console.log('[API POST /api/admin/services] Criando serviço no banco de dados...')
+    console.log('[API POST /api/admin/services] Dados a serem inseridos:', {
+      name: validatedData.name,
+      description: validatedData.description || null,
+      duration: validatedData.duration,
+      active: validatedData.active ?? true,
+    })
+    
     const service = await prisma.service.create({
       data: {
         name: validatedData.name,
@@ -109,17 +140,17 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(service, { status: 201 })
   } catch (error) {
     const duration = Date.now() - startTime
-    console.error(`[API POST /api/admin/services] ❌ Erro após ${duration}ms:`)
+    console.error(`\n========== [API POST /api/admin/services] ERRO após ${duration}ms ==========`)
+    console.error('[API POST /api/admin/services] Tipo do erro:', error?.constructor?.name || typeof error)
     
     if (error instanceof z.ZodError) {
-      console.error('[API POST /api/admin/services] Erro de validação Zod:', {
-        errors: error.errors,
-        issues: error.issues.map(issue => ({
-          path: issue.path,
-          message: issue.message,
-          code: issue.code
-        }))
-      })
+      console.error('[API POST /api/admin/services] ❌ Erro de validação Zod')
+      console.error('[API POST /api/admin/services] Erros:', JSON.stringify(error.errors, null, 2))
+      console.error('[API POST /api/admin/services] Issues:', error.issues.map(issue => ({
+        path: issue.path,
+        message: issue.message,
+        code: issue.code
+      })))
       return NextResponse.json(
         { error: 'Dados inválidos', details: error.errors },
         { status: 400 }
@@ -127,18 +158,42 @@ export async function POST(request: NextRequest) {
     }
 
     if (error instanceof Error) {
-      console.error('[API POST /api/admin/services] Mensagem do erro:', error.message)
-      console.error('[API POST /api/admin/services] Stack trace:', error.stack)
-      console.error('[API POST /api/admin/services] Tipo do erro:', error.constructor.name)
+      console.error('[API POST /api/admin/services] ❌ Erro capturado')
+      console.error('[API POST /api/admin/services] Mensagem:', error.message)
+      console.error('[API POST /api/admin/services] Stack:', error.stack)
+      console.error('[API POST /api/admin/services] Nome:', error.name)
+      
+      // Log de propriedades adicionais do Prisma
+      const prismaError = error as any
+      if (prismaError.code) {
+        console.error('[API POST /api/admin/services] Prisma Error Code:', prismaError.code)
+      }
+      if (prismaError.meta) {
+        console.error('[API POST /api/admin/services] Prisma Error Meta:', JSON.stringify(prismaError.meta, null, 2))
+      }
+      if (prismaError.clientVersion) {
+        console.error('[API POST /api/admin/services] Prisma Client Version:', prismaError.clientVersion)
+      }
       
       // Verificar erros específicos do Prisma
-      if (error.message.includes('P1001') || error.message.includes('Can\'t reach database server')) {
-        console.error('[API POST /api/admin/services] Erro de conexão com banco detectado')
+      const errorMessage = error.message.toLowerCase()
+      const errorCode = prismaError.code || ''
+      
+      console.error('[API POST /api/admin/services] Verificando tipo de erro...')
+      console.error('[API POST /api/admin/services] Error message contém "P1001"?', errorMessage.includes('p1001'))
+      console.error('[API POST /api/admin/services] Error message contém "can\'t reach"?', errorMessage.includes("can't reach") || errorMessage.includes('cant reach'))
+      console.error('[API POST /api/admin/services] Error code:', errorCode)
+      
+      if (errorCode === 'P1001' || errorMessage.includes('p1001') || errorMessage.includes("can't reach") || errorMessage.includes('cant reach') || errorMessage.includes('connection')) {
+        console.error('[API POST /api/admin/services] ❌ Erro de conexão com banco detectado')
+        console.error('[API POST /api/admin/services] DATABASE_URL no momento do erro:', process.env.DATABASE_URL ? 'DEFINIDO' : 'NÃO DEFINIDO')
         return NextResponse.json(
           { 
             error: 'Erro de conexão com banco de dados',
             details: 'Não foi possível conectar ao banco PostgreSQL. Verifique se o DATABASE_URL está correto.',
-            code: 'DATABASE_CONNECTION_ERROR'
+            code: 'DATABASE_CONNECTION_ERROR',
+            prismaCode: errorCode,
+            errorMessage: error.message
           },
           { status: 500 }
         )
@@ -183,13 +238,17 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    console.error('[API POST /api/admin/services] Erro desconhecido:', error)
+    console.error('[API POST /api/admin/services] ❌ Erro desconhecido')
+    console.error('[API POST /api/admin/services] Error completo:', JSON.stringify(error, Object.getOwnPropertyNames(error), 2))
+    console.error('========== [FIM DO ERRO] ==========\n')
+    
     return NextResponse.json(
       { 
         error: 'Erro ao criar serviço',
         details: error instanceof Error ? error.message : 'Erro desconhecido',
         type: error instanceof Error ? error.constructor.name : 'Unknown',
-        code: 'UNKNOWN_ERROR'
+        code: 'UNKNOWN_ERROR',
+        fullError: process.env.NODE_ENV === 'development' ? String(error) : undefined
       },
       { status: 500 }
     )

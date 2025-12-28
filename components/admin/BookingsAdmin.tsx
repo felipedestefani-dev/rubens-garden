@@ -170,7 +170,7 @@ export function BookingsAdmin() {
       <div className="flex items-center justify-center py-20">
         <div className="text-center">
           <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-600 mb-4"></div>
-          <p className="text-gray-500 text-sm">Carregando agendamentos...</p>
+          <p className="text-gray-500 dark:text-gray-400 text-sm">Carregando agendamentos...</p>
         </div>
       </div>
     )
@@ -181,8 +181,8 @@ export function BookingsAdmin() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900">Agendamentos</h2>
-          <p className="text-sm text-gray-500 mt-1">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Agendamentos</h2>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
             {bookings.length} agendamento{bookings.length !== 1 ? 's' : ''} total{bookings.length > 0 ? ' • ' : ''}
             {bookings.filter(b => b.status === 'pending').length > 0 && (
               <span className="font-medium text-amber-600">
@@ -196,7 +196,7 @@ export function BookingsAdmin() {
           <select
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
-            className="px-4 py-2 text-sm border border-gray-200 rounded-lg bg-white text-gray-700 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
+            className="px-4 py-2 text-sm border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
           >
             <option value="">Todos</option>
             <option value="pending">Pendentes</option>
@@ -208,19 +208,19 @@ export function BookingsAdmin() {
             type="date"
             value={filterDate}
             onChange={(e) => setFilterDate(e.target.value)}
-            className="px-4 py-2 text-sm border border-gray-200 rounded-lg bg-white text-gray-700 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
+            className="px-4 py-2 text-sm border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
           />
         </div>
       </div>
 
       {/* Cards Grid */}
       {filteredBookings.length === 0 ? (
-        <div className="text-center py-16 bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200">
-          <svg className="w-12 h-12 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="text-center py-16 bg-gray-50 dark:bg-gray-800/50 rounded-2xl border-2 border-dashed border-gray-200 dark:border-gray-700">
+          <svg className="w-12 h-12 text-gray-400 dark:text-gray-500 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
           </svg>
-          <p className="text-gray-500 font-medium">Nenhum agendamento encontrado</p>
-          <p className="text-gray-400 text-sm mt-1">
+          <p className="text-gray-500 dark:text-gray-400 font-medium">Nenhum agendamento encontrado</p>
+          <p className="text-gray-400 dark:text-gray-500 text-sm mt-1">
             {filterStatus || filterDate ? 'Tente alterar os filtros' : 'Os agendamentos aparecerão aqui'}
           </p>
         </div>
@@ -231,7 +231,7 @@ export function BookingsAdmin() {
             return (
               <div
                 key={booking.id}
-                className="bg-white rounded-xl border border-gray-200 p-5 hover:shadow-lg transition-all duration-200 hover:border-gray-300"
+                className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5 hover:shadow-lg transition-all duration-200 hover:border-gray-300 dark:hover:border-gray-600"
               >
                 {/* Status Badge */}
                 <div className="flex items-center justify-between mb-4">
@@ -243,17 +243,17 @@ export function BookingsAdmin() {
 
                 {/* Service */}
                 <div className="mb-4">
-                  <p className="text-xs text-gray-500 mb-1">Serviço</p>
-                  <p className="text-sm font-semibold text-gray-900">{booking.service.name}</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Serviço</p>
+                  <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">{booking.service.name}</p>
                 </div>
 
                 {/* Client Info */}
                 <div className="mb-4 space-y-2">
                   <div>
-                    <p className="text-xs text-gray-500 mb-1">Cliente</p>
-                    <p className="text-sm font-medium text-gray-900">{booking.clientName}</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Cliente</p>
+                    <p className="text-sm font-medium text-gray-900 dark:text-gray-100">{booking.clientName}</p>
                   </div>
-                  <div className="flex items-center gap-2 text-xs text-gray-600">
+                  <div className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                     </svg>
@@ -262,24 +262,24 @@ export function BookingsAdmin() {
                 </div>
 
                 {/* Date & Time */}
-                <div className="mb-4 p-3 bg-gray-50 rounded-lg">
-                  <p className="text-xs text-gray-500 mb-1">Data e Horário</p>
-                  <p className="text-sm font-semibold text-gray-900">
+                <div className="mb-4 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Data e Horário</p>
+                  <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">
                     {format(new Date(booking.date), "dd 'de' MMMM 'de' yyyy", { locale: ptBR })}
                   </p>
-                  <p className="text-sm text-gray-700 mt-1">{booking.time}</p>
+                  <p className="text-sm text-gray-700 dark:text-gray-300 mt-1">{booking.time}</p>
                 </div>
 
                 {/* Notes */}
                 {booking.notes && (
-                  <div className="mb-4 p-3 bg-blue-50 rounded-lg border border-blue-100">
-                    <p className="text-xs text-blue-600 font-medium mb-1">Observações</p>
-                    <p className="text-sm text-blue-900 line-clamp-2">{booking.notes}</p>
+                  <div className="mb-4 p-3 bg-blue-50 dark:bg-blue-900/30 rounded-lg border border-blue-100 dark:border-blue-800">
+                    <p className="text-xs text-blue-600 dark:text-blue-400 font-medium mb-1">Observações</p>
+                    <p className="text-sm text-blue-900 dark:text-blue-200 line-clamp-2">{booking.notes}</p>
                   </div>
                 )}
 
                 {/* Actions */}
-                <div className="flex items-center gap-2 pt-4 border-t border-gray-100">
+                <div className="flex items-center gap-2 pt-4 border-t border-gray-100 dark:border-gray-700">
                   <select
                     value={booking.status}
                     onChange={(e) => handleStatusChange(booking.id, e.target.value)}
@@ -308,28 +308,28 @@ export function BookingsAdmin() {
       {/* Delete Confirm Modal */}
       {deleteConfirm && mounted && createPortal(
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-md w-full">
             <div className="p-6">
               <div className="flex items-center gap-4 mb-6">
-                <div className="flex-shrink-0 w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
-                  <svg className="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="flex-shrink-0 w-12 h-12 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center">
+                  <svg className="w-6 h-6 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-gray-900">Confirmar Exclusão</h3>
-                  <p className="text-sm text-gray-500 mt-1">Esta ação não pode ser desfeita</p>
+                  <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">Confirmar Exclusão</h3>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Esta ação não pode ser desfeita</p>
                 </div>
               </div>
               
-              <p className="text-gray-700 mb-6">
+              <p className="text-gray-700 dark:text-gray-300 mb-6">
                 Tem certeza que deseja deletar o agendamento de <span className="font-semibold">{deleteConfirm.clientName}</span>?
               </p>
 
               <div className="flex gap-3">
                 <button
                   onClick={() => setDeleteConfirm(null)}
-                  className="flex-1 px-4 py-2.5 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+                  className="flex-1 px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
                 >
                   Cancelar
                 </button>

@@ -281,7 +281,7 @@ export function ServiceRequestsAdmin() {
       <div className="flex items-center justify-center py-20">
         <div className="text-center">
           <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-600 mb-4"></div>
-          <p className="text-gray-500 text-sm">Carregando solicitações...</p>
+          <p className="text-gray-500 dark:text-gray-400 text-sm">Carregando solicitações...</p>
         </div>
       </div>
     )
@@ -292,8 +292,8 @@ export function ServiceRequestsAdmin() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900">Solicitações</h2>
-          <p className="text-sm text-gray-500 mt-1">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Solicitações</h2>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
             {pendingCount > 0 && (
               <span className="font-medium text-amber-600">{pendingCount} pendente{pendingCount !== 1 ? 's' : ''}</span>
             )}
@@ -306,7 +306,7 @@ export function ServiceRequestsAdmin() {
           <select
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
-            className="px-4 py-2 text-sm border border-gray-200 rounded-lg bg-white text-gray-700 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
+            className="px-4 py-2 text-sm border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
           >
             <option value="">Todas</option>
             <option value="pending">Pendentes</option>
@@ -318,12 +318,12 @@ export function ServiceRequestsAdmin() {
 
       {/* Cards Grid */}
       {filteredRequests.length === 0 ? (
-        <div className="text-center py-16 bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200">
-          <svg className="w-12 h-12 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="text-center py-16 bg-gray-50 dark:bg-gray-800/50 rounded-2xl border-2 border-dashed border-gray-200 dark:border-gray-700">
+          <svg className="w-12 h-12 text-gray-400 dark:text-gray-500 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
           </svg>
-          <p className="text-gray-500 font-medium">Nenhuma solicitação encontrada</p>
-          <p className="text-gray-400 text-sm mt-1">
+          <p className="text-gray-500 dark:text-gray-400 font-medium">Nenhuma solicitação encontrada</p>
+          <p className="text-gray-400 dark:text-gray-500 text-sm mt-1">
             {filterStatus ? 'Tente alterar o filtro' : 'As solicitações aparecerão aqui'}
           </p>
         </div>
@@ -334,7 +334,7 @@ export function ServiceRequestsAdmin() {
             return (
               <div
                 key={request.id}
-                className="bg-white rounded-xl border border-gray-200 p-5 hover:shadow-lg transition-all duration-200 hover:border-gray-300"
+                className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5 hover:shadow-lg transition-all duration-200 hover:border-gray-300 dark:hover:border-gray-600"
               >
                 {/* Status Badge */}
                 <div className="flex items-center justify-between mb-4">
@@ -349,17 +349,17 @@ export function ServiceRequestsAdmin() {
 
                 {/* Service */}
                 <div className="mb-4">
-                  <p className="text-xs text-gray-500 mb-1">Serviço</p>
-                  <p className="text-sm font-semibold text-gray-900">{request.service.name}</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Serviço</p>
+                  <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">{request.service.name}</p>
                 </div>
 
                 {/* Client Info */}
                 <div className="mb-4 space-y-2">
                   <div>
-                    <p className="text-xs text-gray-500 mb-1">Cliente</p>
-                    <p className="text-sm font-medium text-gray-900">{request.clientName}</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Cliente</p>
+                    <p className="text-sm font-medium text-gray-900 dark:text-gray-100">{request.clientName}</p>
                   </div>
-                  <div className="flex items-center gap-2 text-xs text-gray-600">
+                  <div className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                     </svg>
@@ -369,28 +369,28 @@ export function ServiceRequestsAdmin() {
 
                 {/* Address */}
                 <div className="mb-4">
-                  <p className="text-xs text-gray-500 mb-1">Endereço</p>
-                  <p className="text-sm text-gray-700 line-clamp-2">{request.address}</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Endereço</p>
+                  <p className="text-sm text-gray-700 dark:text-gray-300 line-clamp-2">{request.address}</p>
                 </div>
 
                 {/* Notes */}
                 {request.notes && (
-                  <div className="mb-4 p-3 bg-gray-50 rounded-lg">
-                    <p className="text-xs text-gray-500 mb-1">Observações</p>
-                    <p className="text-sm text-gray-700 line-clamp-2">{request.notes}</p>
+                  <div className="mb-4 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Observações</p>
+                    <p className="text-sm text-gray-700 dark:text-gray-300 line-clamp-2">{request.notes}</p>
                   </div>
                 )}
 
                 {/* Admin Notes */}
                 {request.adminNotes && (
-                  <div className="mb-4 p-3 bg-blue-50 rounded-lg border border-blue-100">
-                    <p className="text-xs text-blue-600 font-medium mb-1">Nota do Admin</p>
-                    <p className="text-sm text-blue-900 line-clamp-2">{request.adminNotes}</p>
+                  <div className="mb-4 p-3 bg-blue-50 dark:bg-blue-900/30 rounded-lg border border-blue-100 dark:border-blue-800">
+                    <p className="text-xs text-blue-600 dark:text-blue-400 font-medium mb-1">Nota do Admin</p>
+                    <p className="text-sm text-blue-900 dark:text-blue-200 line-clamp-2">{request.adminNotes}</p>
                   </div>
                 )}
 
                 {/* Actions */}
-                <div className="flex items-center gap-2 pt-4 border-t border-gray-100">
+                <div className="flex items-center gap-2 pt-4 border-t border-gray-100 dark:border-gray-700">
                   {request.status?.toLowerCase().trim() === 'pending' && (
                     <button
                       onClick={() => {
@@ -425,13 +425,13 @@ export function ServiceRequestsAdmin() {
       {/* Edit Modal */}
       {editingRequest && mounted && createPortal(
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4 overflow-y-auto">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full my-8">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-2xl w-full my-8">
             {/* Modal Header */}
-            <div className="p-6 border-b border-gray-200">
+            <div className="p-6 border-b border-gray-200 dark:border-gray-700">
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="text-xl font-bold text-gray-900">Gerenciar Solicitação</h3>
-                  <p className="text-sm text-gray-500 mt-1">Aprove ou rejeite a solicitação</p>
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">Gerenciar Solicitação</h3>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Aprove ou rejeite a solicitação</p>
                 </div>
                 <button
                   onClick={() => {
@@ -443,7 +443,7 @@ export function ServiceRequestsAdmin() {
                     setAvailableDates([])
                     setAvailableTimes([])
                   }}
-                  className="text-gray-400 hover:text-gray-600 transition-colors"
+                  className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
                 >
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -455,40 +455,40 @@ export function ServiceRequestsAdmin() {
             {/* Modal Content */}
             <div className="p-6 space-y-6 max-h-[calc(100vh-200px)] overflow-y-auto">
               {/* Request Info */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-gray-50 rounded-xl">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
                 <div>
-                  <p className="text-xs text-gray-500 mb-1">Cliente</p>
-                  <p className="text-sm font-semibold text-gray-900">{editingRequest.clientName}</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Cliente</p>
+                  <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">{editingRequest.clientName}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-gray-500 mb-1">Telefone</p>
-                  <p className="text-sm text-gray-900">{editingRequest.clientPhone}</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Telefone</p>
+                  <p className="text-sm text-gray-900 dark:text-gray-100">{editingRequest.clientPhone}</p>
                 </div>
                 <div className="md:col-span-2">
-                  <p className="text-xs text-gray-500 mb-1">Serviço</p>
-                  <p className="text-sm font-semibold text-gray-900">{editingRequest.service.name}</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Serviço</p>
+                  <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">{editingRequest.service.name}</p>
                 </div>
                 <div className="md:col-span-2">
-                  <p className="text-xs text-gray-500 mb-1">Endereço</p>
-                  <p className="text-sm text-gray-900">{editingRequest.address}</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Endereço</p>
+                  <p className="text-sm text-gray-900 dark:text-gray-100">{editingRequest.address}</p>
                 </div>
                 {editingRequest.notes && (
                   <div className="md:col-span-2">
-                    <p className="text-xs text-gray-500 mb-1">Observações do Cliente</p>
-                    <p className="text-sm text-gray-900">{editingRequest.notes}</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Observações do Cliente</p>
+                    <p className="text-sm text-gray-900 dark:text-gray-100">{editingRequest.notes}</p>
                   </div>
                 )}
               </div>
 
               {/* Admin Notes */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Observações do Admin (opcional)
                 </label>
                 <textarea
                   value={adminNotes}
                   onChange={(e) => setAdminNotes(e.target.value)}
-                  className="w-full px-4 py-3 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all resize-none"
+                  className="w-full px-4 py-3 text-sm border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all resize-none placeholder-gray-400 dark:placeholder-gray-500"
                   rows={3}
                   placeholder="Adicione observações sobre a aprovação/rejeição..."
                 />
@@ -496,13 +496,13 @@ export function ServiceRequestsAdmin() {
 
               {/* Booking Date */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Data do Agendamento *
                 </label>
                 {loadingAvailability ? (
-                  <div className="text-center py-8 text-gray-500 text-sm">Carregando dias disponíveis...</div>
+                  <div className="text-center py-8 text-gray-500 dark:text-gray-400 text-sm">Carregando dias disponíveis...</div>
                 ) : (
-                  <div className="grid grid-cols-3 sm:grid-cols-4 gap-2 max-h-48 overflow-y-auto p-3 bg-gray-50 rounded-lg border border-gray-200">
+                  <div className="grid grid-cols-3 sm:grid-cols-4 gap-2 max-h-48 overflow-y-auto p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg border border-gray-200 dark:border-gray-600">
                     {availableDates.map((dateInfo) => (
                       <button
                         key={dateInfo.date}
@@ -513,8 +513,8 @@ export function ServiceRequestsAdmin() {
                           bookingDate === dateInfo.date
                             ? 'bg-emerald-600 text-white shadow-md'
                             : dateInfo.available
-                            ? 'bg-white text-gray-700 border border-gray-200 hover:border-emerald-500 hover:bg-emerald-50'
-                            : 'bg-gray-100 text-gray-400 border border-gray-200 cursor-not-allowed'
+                            ? 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-600 hover:border-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-900/30'
+                            : 'bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500 border border-gray-200 dark:border-gray-700 cursor-not-allowed'
                         }`}
                       >
                         {dateInfo.label}
@@ -523,7 +523,7 @@ export function ServiceRequestsAdmin() {
                   </div>
                 )}
                 {bookingDate && (
-                  <p className="text-xs text-gray-500 mt-2">
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
                     Selecionado: {format(new Date(bookingDate), "dd 'de' MMMM 'de' yyyy", { locale: ptBR })}
                   </p>
                 )}
@@ -531,11 +531,11 @@ export function ServiceRequestsAdmin() {
 
               {/* Booking Time */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Horário do Agendamento *
                 </label>
                 {availableTimes.length > 0 ? (
-                  <div className="grid grid-cols-4 sm:grid-cols-6 gap-2 max-h-40 overflow-y-auto p-3 bg-gray-50 rounded-lg border border-gray-200">
+                  <div className="grid grid-cols-4 sm:grid-cols-6 gap-2 max-h-40 overflow-y-auto p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg border border-gray-200 dark:border-gray-600">
                     {availableTimes.map((time) => (
                       <button
                         key={time}
@@ -544,7 +544,7 @@ export function ServiceRequestsAdmin() {
                         className={`px-3 py-2 text-xs rounded-lg transition-all font-medium ${
                           bookingTime === time
                             ? 'bg-emerald-600 text-white shadow-md'
-                            : 'bg-white text-gray-700 border border-gray-200 hover:border-emerald-500 hover:bg-emerald-50'
+                            : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-600 hover:border-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-900/30'
                         }`}
                       >
                         {time}
@@ -552,15 +552,15 @@ export function ServiceRequestsAdmin() {
                     ))}
                   </div>
                 ) : bookingDate ? (
-                  <p className="text-sm text-gray-500 py-2">Selecione uma data para ver os horários disponíveis</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 py-2">Selecione uma data para ver os horários disponíveis</p>
                 ) : (
-                  <p className="text-sm text-gray-500 py-2">Selecione uma data primeiro</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 py-2">Selecione uma data primeiro</p>
                 )}
               </div>
 
               {/* Booking Price */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Valor do Serviço (R$) *
                 </label>
                 <input
@@ -569,22 +569,22 @@ export function ServiceRequestsAdmin() {
                   min="0"
                   value={bookingPrice}
                   onChange={(e) => setBookingPrice(e.target.value)}
-                  className="w-full px-4 py-3 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
+                  className="w-full px-4 py-3 text-sm border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all placeholder-gray-400 dark:placeholder-gray-500"
                   placeholder="0.00"
                   required
                 />
-                <p className="text-xs text-gray-500 mt-2">
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
                   * Obrigatório apenas ao aprovar. Um agendamento será criado automaticamente.
                 </p>
               </div>
             </div>
 
             {/* Modal Footer */}
-            <div className="p-6 border-t border-gray-200 flex flex-col sm:flex-row gap-3">
+            <div className="p-6 border-t border-gray-200 dark:border-gray-700 flex flex-col sm:flex-row gap-3">
               <button
                 onClick={() => handleStatusChange(editingRequest.id, 'approved')}
                 disabled={!bookingDate || !bookingTime || !bookingPrice || isNaN(parseFloat(bookingPrice)) || parseFloat(bookingPrice) <= 0}
-                className="flex-1 px-6 py-3 text-sm font-medium text-white bg-emerald-600 rounded-lg hover:bg-emerald-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+                className="flex-1 px-6 py-3 text-sm font-medium text-white bg-emerald-600 rounded-lg hover:bg-emerald-700 disabled:bg-gray-300 dark:disabled:bg-gray-600 disabled:cursor-not-allowed transition-colors"
               >
                 Aprovar e Criar Agendamento
               </button>
@@ -604,7 +604,7 @@ export function ServiceRequestsAdmin() {
                   setAvailableDates([])
                   setAvailableTimes([])
                 }}
-                className="px-6 py-3 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+                className="px-6 py-3 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
               >
                 Cancelar
               </button>
@@ -617,28 +617,28 @@ export function ServiceRequestsAdmin() {
       {/* Delete Confirm Modal */}
       {deleteConfirm && mounted && createPortal(
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-md w-full">
             <div className="p-6">
               <div className="flex items-center gap-4 mb-6">
-                <div className="flex-shrink-0 w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
-                  <svg className="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="flex-shrink-0 w-12 h-12 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center">
+                  <svg className="w-6 h-6 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-gray-900">Confirmar Exclusão</h3>
-                  <p className="text-sm text-gray-500 mt-1">Esta ação não pode ser desfeita</p>
+                  <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">Confirmar Exclusão</h3>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Esta ação não pode ser desfeita</p>
                 </div>
               </div>
               
-              <p className="text-gray-700 mb-6">
+              <p className="text-gray-700 dark:text-gray-300 mb-6">
                 Tem certeza que deseja deletar a solicitação de <span className="font-semibold">{deleteConfirm.clientName}</span>?
               </p>
 
               <div className="flex gap-3">
                 <button
                   onClick={() => setDeleteConfirm(null)}
-                  className="flex-1 px-4 py-2.5 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+                  className="flex-1 px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
                 >
                   Cancelar
                 </button>
@@ -658,21 +658,21 @@ export function ServiceRequestsAdmin() {
       {/* Error Modal */}
       {errorMessage && mounted && createPortal(
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-md w-full">
             <div className="p-6">
               <div className="flex items-center gap-4 mb-6">
-                <div className="flex-shrink-0 w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
-                  <svg className="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="flex-shrink-0 w-12 h-12 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center">
+                  <svg className="w-6 h-6 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-gray-900">Erro</h3>
-                  <p className="text-sm text-gray-500 mt-1">Ocorreu um problema</p>
+                  <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">Erro</h3>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Ocorreu um problema</p>
                 </div>
               </div>
               
-              <p className="text-gray-700 mb-6 whitespace-pre-line">{errorMessage}</p>
+              <p className="text-gray-700 dark:text-gray-300 mb-6 whitespace-pre-line">{errorMessage}</p>
 
               <button
                 onClick={() => setErrorMessage(null)}
