@@ -49,3 +49,4 @@ export function useSafeFetch<T = any>(options?: UseSafeFetchOptions) {
   return { fetchData, loading, error }
 }
 
+

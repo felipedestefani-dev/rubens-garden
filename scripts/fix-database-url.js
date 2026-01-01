@@ -44,3 +44,4 @@ console.log('✅ .env.local atualizado com a URL direta!')
 console.log('\nAgora você pode executar:')
 console.log('  npx prisma migrate dev --name init')
 
+
